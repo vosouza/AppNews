@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.evosouza.news.BuildConfig
+import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
@@ -16,6 +18,7 @@ import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.ui.adapter.NewsAdapter
 import com.evosouza.news.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 
 class HomeFragment : Fragment() {
@@ -50,17 +53,19 @@ class HomeFragment : Fragment() {
 
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
-            binding.swipeLayout.isRefreshing = it.loading == true
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { newsResponse ->
                         setRecyclerView(newsResponse.articles)
                     }
+                    binding.swipeLayout.isRefreshing=false
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), "Erro: ${it.error}", Toast.LENGTH_SHORT).show()
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.LOADING -> {
+                    binding.swipeLayout.isRefreshing = true
                     //binding.progressBar.visibility = if(it.loading == true) View.VISIBLE else View.GONE
                 }
             }
@@ -69,7 +74,9 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter(list: List<Article>){
         newsAdapter = NewsAdapter(list){ article ->
-            Toast.makeText(requireContext(), "funcionou", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_articleFragment, Bundle().apply {
+                putSerializable("article", article)
+            })
         }
     }
 
