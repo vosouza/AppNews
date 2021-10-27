@@ -18,7 +18,6 @@ import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.ui.adapter.NewsAdapter
 import com.evosouza.news.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 
 
 class HomeFragment : Fragment() {

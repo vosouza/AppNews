@@ -1,6 +1,8 @@
 package com.evosouza.news.ui.home.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,6 +28,12 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemReselectedListener {
             // no action
         }
+    }
+
+    fun hideKeyboard(){
+        val view = this.currentFocus
+        val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
 }
