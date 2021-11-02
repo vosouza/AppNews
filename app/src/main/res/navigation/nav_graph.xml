@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.evosouza.news.ui.search.fragment.SearchFragment"
+        android:name="com.evosouza.news.ui.home.search.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.evosouza.news.ui.favorites.FavoriteFragment"
+        android:name="com.evosouza.news.ui.home.favorites.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.evosouza.news.ui.home.fragment.HomeFragment"
+        android:name="com.evosouza.news.ui.home.homefragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.evosouza.news.ui.article.ArticleFragment"
+        android:name="com.evosouza.news.ui.home.article.ArticleFragment"
         android:label="fragment_article"
         tools:layout="@layout/fragment_article" />
 </navigation>

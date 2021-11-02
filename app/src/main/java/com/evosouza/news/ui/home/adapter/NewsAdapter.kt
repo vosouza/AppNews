@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.adapter
+package com.evosouza.news.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.ItemNewsBinding
-import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsAdapter(
     private val listNews: List<Article>,

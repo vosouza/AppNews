@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.favorites
+package com.evosouza.news.ui.login.loginfragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.evosouza.news.R
-import com.evosouza.news.databinding.FragmentFavoriteBinding
+import com.evosouza.news.databinding.FragmentLoginBinding
 
-class FavoriteFragment : Fragment() {
+class LoginFragment : Fragment() {
 
-    private lateinit var binding: FragmentFavoriteBinding
+    lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = FragmentFavoriteBinding.inflate(inflater,container, false)
-        // Inflate the layout for this fragment
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 

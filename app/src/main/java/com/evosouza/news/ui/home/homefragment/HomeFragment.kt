@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.home.fragment
+package com.evosouza.news.ui.home.homefragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.databinding.FragmentHomeBinding
-import com.evosouza.news.ui.adapter.NewsAdapter
+import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 
