@@ -1,21 +1,25 @@
-package com.evosouza.news.ui.favorites
+package com.evosouza.news.ui.home.favorites
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
+import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentFavoriteBinding
-import com.evosouza.news.ui.favorites.viewmodel.FavoritesViewModel
+import com.evosouza.news.ui.home.adapter.NewsAdapter
+import com.evosouza.news.ui.home.favorites.viewmodel.FavoritesViewModel
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoritesViewModel
     private lateinit var binding: FragmentFavoriteBinding
+    private lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +39,28 @@ class FavoriteFragment : Fragment() {
 
         viewModel.getAllArticles().observe(viewLifecycleOwner){ listArticles ->
             listArticles?.let {
-                Log.d("NOTICIAS", it.toString())
+                setRecyclerView(it)
             }
+        }
+
+    }
+
+    private fun setRecyclerView(list: List<Article>) {
+        setAdapter(list)
+        binding.favoriteRecyclerView.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun setAdapter(list: List<Article>){
+        newsAdapter = NewsAdapter(list){
+            findNavController().navigate(R.id.action_favoriteFragment_to_articleFragment,
+            Bundle().apply
+             {
+                 putSerializable("article", it)
+             })
         }
     }
 

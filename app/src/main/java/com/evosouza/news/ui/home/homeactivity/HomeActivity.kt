@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.home.activity
+package com.evosouza.news.ui.home.homeactivity
 
 import android.content.Context
 import android.os.Bundle

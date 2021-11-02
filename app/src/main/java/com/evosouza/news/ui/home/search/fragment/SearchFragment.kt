@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.search.fragment
+package com.evosouza.news.ui.home.search.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,9 +16,9 @@ import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.databinding.FragmentSearchBinding
-import com.evosouza.news.ui.adapter.NewsAdapter
-import com.evosouza.news.ui.home.activity.HomeActivity
-import com.evosouza.news.ui.search.viewmodel.SearchViewModel
+import com.evosouza.news.ui.home.adapter.NewsAdapter
+import com.evosouza.news.ui.home.homeactivity.HomeActivity
+import com.evosouza.news.ui.home.search.viewmodel.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay

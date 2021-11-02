@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.article
+package com.evosouza.news.ui.home.article
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
-import com.evosouza.news.R
-import com.evosouza.news.data.database.NewsDAO
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentArticleBinding
-import com.evosouza.news.ui.article.viewmodel.ArticleViewModel
+import com.evosouza.news.ui.home.article.viewmodel.ArticleViewModel
 
 class ArticleFragment : Fragment() {
 

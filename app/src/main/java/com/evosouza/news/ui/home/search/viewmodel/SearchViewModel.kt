@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.search.viewmodel
+package com.evosouza.news.ui.home.search.viewmodel
 
 import androidx.lifecycle.*
 import com.evosouza.news.core.State
@@ -7,7 +7,6 @@ import com.evosouza.news.data.repository.NewsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import java.lang.IllegalArgumentException
 
 class SearchViewModel(

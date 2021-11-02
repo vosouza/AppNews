@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.article.viewmodel
+package com.evosouza.news.ui.home.favorites.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,23 +7,27 @@ import com.evosouza.news.data.database.repository.DBRepository
 import com.evosouza.news.data.model.Article
 import kotlinx.coroutines.launch
 
-class ArticleViewModel(
+class FavoritesViewModel(
     private val repository: DBRepository
 ): ViewModel() {
 
-    fun saveArticle(article: Article) = viewModelScope.launch {
-        repository.insert(article)
+    fun getAllArticles() = repository.getAllArticles()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        repository.delete(article)
     }
 
-    class ArticleViewModelProviderFactory(
+
+    class FavoritesViewModelProviderFactory(
         private val repository: DBRepository
     ): ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ArticleViewModel::class.java)){
-                return ArticleViewModel(repository) as T
+            if (modelClass.isAssignableFrom(FavoritesViewModel::class.java)){
+                return FavoritesViewModel(repository) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
 
     }
+
 }
