@@ -22,4 +22,6 @@
     <string name="cancel">Cancel</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="invalid_user_name">User Name Invalid</string>
+    <string name="empty_password">Empty Password</string>
 </resources>

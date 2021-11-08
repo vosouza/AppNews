@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
-import com.evosouza.news.data.database.NewsDB
+import com.evosouza.news.data.database.dao.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentArticleBinding

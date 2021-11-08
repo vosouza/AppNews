@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.evosouza.news.R
-import com.evosouza.news.data.database.NewsDB
+import com.evosouza.news.data.database.dao.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentFavoriteBinding
