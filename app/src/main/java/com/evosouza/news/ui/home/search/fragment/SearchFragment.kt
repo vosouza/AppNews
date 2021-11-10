@@ -15,6 +15,7 @@ import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
+import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.databinding.FragmentSearchBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
 
     private lateinit var viewModel: SearchViewModel
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding: FragmentSearchBinding get() = _binding!!
     private lateinit var searchAdapter: NewsAdapter
 
     override fun onCreateView(
@@ -35,7 +37,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -106,5 +108,10 @@ class SearchFragment : Fragment() {
 
     private fun hideKeyboard(){
         (activity as HomeActivity).hideKeyboard()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.evosouza.news.R
-import com.evosouza.news.data.database.dao.NewsDB
+import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentFavoriteBinding
@@ -18,7 +18,8 @@ import com.evosouza.news.ui.home.favorites.viewmodel.FavoritesViewModel
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoritesViewModel
-    private lateinit var binding: FragmentFavoriteBinding
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding: FragmentFavoriteBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
@@ -26,7 +27,7 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentFavoriteBinding.inflate(inflater,container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater,container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -64,4 +65,8 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }

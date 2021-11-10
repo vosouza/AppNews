@@ -1,7 +1,7 @@
 package com.evosouza.news.data.database.repository
 
 import androidx.lifecycle.LiveData
-import com.evosouza.news.data.database.dao.NewsDB
+import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.model.User
 
 class UserRepositoryImpl(private val newsDB: NewsDB) : UserRepository {

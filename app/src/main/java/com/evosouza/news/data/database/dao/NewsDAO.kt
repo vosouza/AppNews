@@ -1,4 +1,4 @@
-package com.evosouza.news.data.database
+package com.evosouza.news.data.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

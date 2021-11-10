@@ -1,4 +1,4 @@
-package com.evosouza.news.data.database.dao
+package com.evosouza.news.data.database
 
 import android.content.Context
 import androidx.room.Database
@@ -7,11 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.evosouza.news.data.database.Converters
-import com.evosouza.news.data.database.NewsDAO
+import com.evosouza.news.data.database.dao.NewsDAO
+import com.evosouza.news.data.database.dao.UserDAO
 import com.evosouza.news.data.model.Article
+import com.evosouza.news.data.model.User
 
-@Database(entities = [Article::class], version = 1, exportSchema = false)
+@Database(entities = [Article::class, User::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class NewsDB: RoomDatabase(){
 

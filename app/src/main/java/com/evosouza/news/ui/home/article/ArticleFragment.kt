@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
-import com.evosouza.news.data.database.dao.NewsDB
+import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.FragmentArticleBinding
@@ -16,14 +16,15 @@ import com.evosouza.news.ui.home.article.viewmodel.ArticleViewModel
 class ArticleFragment : Fragment() {
 
     private lateinit var viewModel: ArticleViewModel
-    private lateinit var binding: FragmentArticleBinding
+    private var _binding: FragmentArticleBinding? = null
+    private val binding: FragmentArticleBinding get() = _binding!!
     private lateinit var article: Article
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentArticleBinding.inflate(inflater, container, false)
+        _binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,5 +46,10 @@ class ArticleFragment : Fragment() {
             Toast.makeText(requireContext(), "artigo salvo", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

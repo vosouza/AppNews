@@ -22,8 +22,9 @@ import kotlinx.coroutines.Dispatchers
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
     lateinit var viewModel: HomeViewModel
+    private var _binding: FragmentHomeBinding? = null
+    private val binding: FragmentHomeBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -91,5 +92,10 @@ class HomeFragment : Fragment() {
 
     private fun getNews() {
         viewModel.getBreakNews("us", 1, BuildConfig.API_KEY)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
