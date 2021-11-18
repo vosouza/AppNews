@@ -24,4 +24,9 @@
     <string name="next">Next</string>
     <string name="invalid_user_name">User Name Invalid</string>
     <string name="empty_password">Empty Password</string>
+    <string name="user_name_invalid">User Name Invalid</string>
+    <string name="password_confirm_error">Password didn\'t mach</string>
+    <string name="email_invalid">E-mail invalid</string>
+    <string name="email_mach">E-mail didn\'t mach</string>
+    <string name="mandatory_field">Mandatory Field</string>
 </resources>

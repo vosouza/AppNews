@@ -9,7 +9,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragmentCreatePassword"
+        android:id="@+id/inputLayoutCreateUserName"
         style="@style/FormEditTextInput"
         android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/createPasswordField"
+            android:id="@+id/edtCreateUserName"
             style="@style/FormEditText"
             android:hint="@string/create_user_name"
             android:inputType="text" />
@@ -25,15 +25,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragmentCreateConfirmPassword"
+        android:id="@+id/inputLayoutEmail"
         style="@style/FormEditTextInput"
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentCreatePassword">
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutCreateUserName">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/confirmPasswordField"
+            android:id="@+id/edtInsertEmail"
             style="@style/FormEditText"
             android:hint="@string/enter_valid_e_mail"
             android:inputType="textEmailAddress" />
@@ -41,15 +41,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragmentCreateConfirmEmail"
+        android:id="@+id/inputLayoutConfirmEmail"
         style="@style/FormEditTextInput"
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentCreateConfirmPassword">
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutEmail">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailTextEDT"
+            android:id="@+id/edtConfirmEmail"
             style="@style/FormEditText"
             android:hint="@string/confirm_e_mail"
             android:inputType="textEmailAddress" />
@@ -63,13 +63,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
         android:background="@drawable/button_fill_bg"
-        android:text="@string/login"
+        android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonCreatePrevious"
-        app:layout_constraintEnd_toEndOf="@+id/fragmentCreateConfirmEmail"
-        app:layout_constraintStart_toStartOf="@+id/fragmentCreateConfirmEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/inputLayoutConfirmEmail"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutConfirmEmail" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCreatePrevious"

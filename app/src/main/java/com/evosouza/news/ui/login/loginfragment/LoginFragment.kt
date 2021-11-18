@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
         viewModel = LoginViewModel.LoginViewModelProvider(db).create(LoginViewModel::class.java)
 
 
-        viewModel.insertUser(User("vini@a.com", "vini12", "123456", ""))
+//        viewModel.insertUser(User("vini@a.com", "vini12", "123456", ""))
 
 
         binding.buttonLogin.setOnClickListener{
@@ -61,7 +61,8 @@ class LoginFragment : Fragment() {
             user?.let {
                 openHomeActivity()
             } ?: kotlin.run {
-                Toast.makeText(requireContext(), "User didnt find", Toast.LENGTH_SHORT).show()
+//              Toast.makeText(requireContext(), "User didnt find", Toast.LENGTH_SHORT).show()
+                binding.errorText.visibility  = View.VISIBLE
             }
         }
     }
