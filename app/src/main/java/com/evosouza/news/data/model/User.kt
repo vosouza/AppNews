@@ -9,7 +9,7 @@ data class User(
     val email: String,
     val userName: String,
     val password: String,
-    val photo: String?
+    var photo: String?
     //pesquisar tipo foto
 ) : Serializable {
     @PrimaryKey(autoGenerate = true)
