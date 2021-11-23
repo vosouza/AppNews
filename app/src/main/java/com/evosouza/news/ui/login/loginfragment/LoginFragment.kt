@@ -41,12 +41,10 @@ class LoginFragment : Fragment() {
         val db = UserRepositoryImpl(NewsDB(requireContext()))
         viewModel = LoginViewModel.LoginViewModelProvider(db).create(LoginViewModel::class.java)
 
-
 //        viewModel.insertUser(User("vini@a.com", "vini12", "123456", ""))
 
-
         binding.buttonLogin.setOnClickListener{
-           login(binding.emailTextEDT.text.toString(), binding.passeordEDT.text.toString())
+           login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
         }
 
         binding.textCreateAccount.setOnClickListener {
@@ -60,20 +58,13 @@ class LoginFragment : Fragment() {
         viewModel.login(email, password)?.observe(viewLifecycleOwner){ user ->
             user?.let {
                 openHomeActivity()
-            } ?: kotlin.run {
-//              Toast.makeText(requireContext(), "User didnt find", Toast.LENGTH_SHORT).show()
+            } ?: kotlin.run {0
                 binding.errorText.visibility  = View.VISIBLE
             }
         }
     }
 
-
     private fun observeVmEvents(){
-
-        viewModel.loading.observe(viewLifecycleOwner){
-            if(it) showLoading() else hideLoading()
-        }
-
         viewModel.loginFieldErrorResId.observe(viewLifecycleOwner){
             binding.inputLayoutUserName.setError(requireContext(), it)
         }
@@ -81,19 +72,10 @@ class LoginFragment : Fragment() {
         viewModel.passwordErrorResId.observe(viewLifecycleOwner){
             binding.inputLayoutPassword.setError(requireContext(), it)
         }
-
     }
 
     private fun openHomeActivity() {
         startActivity(Intent(requireContext(), HomeActivity::class.java))
-    }
-
-    private fun showLoading() {
-        binding.loadingProgressBar.visibility = View.VISIBLE
-    }
-
-    private fun hideLoading() {
-        binding.loadingProgressBar.visibility = View.GONE
     }
 
     override fun onDestroyView() {

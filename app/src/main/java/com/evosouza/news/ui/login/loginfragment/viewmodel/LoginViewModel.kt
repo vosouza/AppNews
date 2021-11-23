@@ -3,13 +3,9 @@ package com.evosouza.news.ui.login.loginfragment.viewmodel
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.evosouza.news.R
-import com.evosouza.news.data.database.repository.DBRepository
 import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
-import com.evosouza.news.ui.home.article.viewmodel.ArticleViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.lang.Exception
 
 class LoginViewModel(private val db: UserRepository): ViewModel() {
 
@@ -18,9 +14,6 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
 
     private val _passwordFieldErrorResId = MutableLiveData<Int?>()
     val passwordErrorResId : LiveData<Int?> = _passwordFieldErrorResId
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading : LiveData<Boolean> = _loading
 
     private var isValid: Boolean = false
 
@@ -47,9 +40,7 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
             R.string.empty_password
         } else null
 
-
     fun insertUser(user: User) = viewModelScope.launch { db.insert(user) }
-
 
     class LoginViewModelProvider(
         private val repository: UserRepository
@@ -60,6 +51,5 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
-
     }
 }

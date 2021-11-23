@@ -58,20 +58,15 @@ class PasswordFragment : Fragment() {
         }
         viewModel.passwordValid.observe(viewLifecycleOwner){ passwordText ->
             passwordText?.let { password ->
-                User(
-                    user.email,
-                    user.userName,
-                    password,
-                    "").also {
-                        sendUserBundle(it)
-                    }
+                user.password = password
+                sendUserBundle(user)
             }
         }
     }
 
-    private fun sendUserBundle(userToSends: User){
+    private fun sendUserBundle(userToSend: User){
         findNavController().navigate(R.id.action_passwordFragment_to_photoFragment, Bundle().apply {
-            putSerializable("user", userToSends)
+            putSerializable("user", userToSend)
         })
     }
 

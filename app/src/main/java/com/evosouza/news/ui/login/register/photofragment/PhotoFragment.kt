@@ -1,38 +1,41 @@
 package com.evosouza.news.ui.login.register.photofragment
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.evosouza.news.core.Status
+import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.UserRepositoryImpl
 import com.evosouza.news.data.model.User
 import com.evosouza.news.databinding.FragmentPhotoBinding
 import com.evosouza.news.ui.login.register.photofragment.photoviewmodel.PhotoViewModel
+import com.evosouza.news.util.MessageDialog
+import com.evosouza.news.util.WelcomeDialog
 
 class PhotoFragment : Fragment() {
 
     private lateinit var binding: FragmentPhotoBinding
     private lateinit var viewModel: PhotoViewModel
     private lateinit var user: User
-    private var isImageUri: Uri? = null
-    private val RESULT_LOAD_IMAGE: Int = 999
+    private var imageUri: Uri? = null
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            imageUri = uri
+            binding.profileImage.setImageURI(imageUri)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -41,65 +44,51 @@ class PhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         user = arguments?.getSerializable("user") as User
-        Log.e("TAG", "onViewCreated: $user" )
+        Log.e("TAG", "onViewCreated: $user")
 
         val userDB = UserRepositoryImpl(NewsDB(requireContext()))
-        viewModel = PhotoViewModel.PhotoViewModelProviderFactory(userDB).create(PhotoViewModel::class.java)
+        viewModel =
+            PhotoViewModel.PhotoViewModelProviderFactory(userDB).create(PhotoViewModel::class.java)
 
         buttonClickListeners()
-        setViewModelListeners()
+        observerViewModelEvents()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-
-        if(resultCode == Activity.RESULT_OK && requestCode == RESULT_LOAD_IMAGE){
-            val uri = data?.data
-            viewModel.setImageUri(uri)
-        }else{
-            viewModel.setImageUri(null)
-        }
-    }
-
-    private fun setViewModelListeners() {
-        viewModel.photo.observe(viewLifecycleOwner){ image ->
-            when(image.status){
-                Status.SUCCESS ->{
-                    image.data?.let { imageUri ->
-                        binding.profileImage.setImageURI(imageUri)
-                        isImageUri = imageUri
-                    }
-                }
-                Status.ERROR ->{
-                    Toast.makeText(requireContext(), "Error getting image", Toast.LENGTH_SHORT).show()
-                    isImageUri = null
-                }
+    private fun observerViewModelEvents() {
+        viewModel.saveResult.observe(viewLifecycleOwner) {
+            if (it) {
+                showWelcomeMessage()
+            } else {
+                Toast.makeText(requireContext(), "falha ao salvar usuario", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
-    private fun setUserImage(imageResId: Uri) {
-        //            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
-        //            binding.profileImage.setImageBitmap(bitmap)
+    private fun showWelcomeMessage() {
+        val dialog = WelcomeDialog{
+            findNavController().navigate(R.id.action_photoFragment_to_loginFragment3)
+        }
+        dialog.show(parentFragmentManager, "WELCOME")
     }
 
     private fun saveUser() {
-        if(isImageUri != null) user.photo = isImageUri!!.path
+//        if (imageUri != null) user.photo = imageUri!!.path
+        imageUri?.let {
+            user.photo = it.path
+        }
         viewModel.saveUser(user)
     }
 
     private fun buttonClickListeners() {
         binding.profileImage.setOnClickListener {
-            Intent(Intent.ACTION_PICK).run {
-                type = "image/"
-                startActivityForResult(this, RESULT_LOAD_IMAGE)
-            }
+            chooseImage()
         }
 
         binding.buttonNext.setOnClickListener {
-            if (isImageUri != null){
+            if (imageUri != null) {
                 saveUser()
-            }else{
+            } else {
                 showDialog()
             }
         }
@@ -109,27 +98,18 @@ class PhotoFragment : Fragment() {
         }
     }
 
-    private fun showDialog(){
-        val builder = AlertDialog.Builder(requireActivity())
-        builder.apply {
-            setMessage("You have not choose a profile picture")
-            setPositiveButton("Yes", nextScreen)
-            setNegativeButton("Cancel", cancelDialog)
-            setTitle("Do you want to continue?")
-        }
-        builder.create()
-        builder.show()
+    private fun showDialog() {
+        MessageDialog(
+            "Do you want to continue?",
+            "You have not choose a profile picture"
+        ).apply {
+            setYesListener{
+                Toast.makeText(requireContext(), "next screen", Toast.LENGTH_SHORT).show()
+            }
+
+        }.show(parentFragmentManager, "PhotoFragment")
     }
 
-    private val nextScreen: DialogInterface.OnClickListener? =
-        DialogInterface.OnClickListener{ _, _ ->
-            Log.e("TAG", "dialog yes", )
-        }
-
-    private val cancelDialog: DialogInterface.OnClickListener? =
-        DialogInterface.OnClickListener{ dialog, _ ->
-            Log.e("TAG", "dialog cancel", )
-            dialog.cancel()
-        }
+    private fun chooseImage() = getContent.launch("image/*")
 
 }

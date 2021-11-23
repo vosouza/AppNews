@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputLayoutUserName">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passeordEDT"
+            android:id="@+id/passwordEDT"
             style="@style/FormEditText"
             android:hint="@string/enterPassword"
             android:inputType="textPassword" />

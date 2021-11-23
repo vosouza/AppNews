@@ -1,8 +1,6 @@
 package com.evosouza.news.ui.login.register.photofragment.photoviewmodel
 
-import android.net.Uri
 import androidx.lifecycle.*
-import com.evosouza.news.core.State
 import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
 import kotlinx.coroutines.launch
@@ -10,22 +8,20 @@ import kotlinx.coroutines.launch
 
 class PhotoViewModel(
     private val userDB: UserRepository
-): ViewModel() {
+) : ViewModel() {
 
-    private var _photo = MutableLiveData<State<Uri?>>()
-    val photo : LiveData<State<Uri?>>
-        get() = _photo
+    private val _saveResult = MutableLiveData<Boolean>()
+    val saveResult: LiveData<Boolean>
+        get() = _saveResult
 
-    fun setImageUri(uri: Uri?){
-        if(uri == null){
-            _photo.value = State.error(NoSuchFieldError())
-        }else{
-            _photo.value = State.success(uri)
+    fun saveUser(user: User) = viewModelScope.launch {
+        try {
+            userDB.insert(user)
+            _saveResult.value = true
+        } catch (e: Exception) {
+            _saveResult.value = false
         }
-
     }
-
-    fun saveUser(user: User) = viewModelScope.launch{ userDB.insert(user)}
 
     class PhotoViewModelProviderFactory(
         private val userDB: UserRepository

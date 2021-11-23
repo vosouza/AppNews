@@ -8,7 +8,7 @@ import java.io.Serializable
 data class User(
     val email: String,
     val userName: String,
-    val password: String,
+    var password: String,
     var photo: String?
     //pesquisar tipo foto
 ) : Serializable {
