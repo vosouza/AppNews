@@ -76,6 +76,7 @@ class LoginFragment : Fragment() {
 
     private fun openHomeActivity() {
         startActivity(Intent(requireContext(), HomeActivity::class.java))
+
     }
 
     override fun onDestroyView() {
