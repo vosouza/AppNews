@@ -13,6 +13,7 @@ import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.UserRepositoryImpl
 import com.evosouza.news.data.model.User
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentLoginBinding
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
 import com.evosouza.news.ui.login.loginfragment.viewmodel.LoginViewModel
@@ -22,9 +23,11 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
+    private lateinit var sharedPreference: SharedPreference
     private lateinit var viewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
+    private var isChecked = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +44,15 @@ class LoginFragment : Fragment() {
         val db = UserRepositoryImpl(NewsDB(requireContext()))
         viewModel = LoginViewModel.LoginViewModelProvider(db).create(LoginViewModel::class.java)
 
+        sharedPreference  = SharedPreference(requireContext())
+
 //        viewModel.insertUser(User("vini@a.com", "vini12", "123456", ""))
+
+        sharedPreference.getData(SharedPreference.EMAIL)?.let {
+            binding.emailTextEDT.setText(it)
+            binding.checkboxPassword.isChecked = true
+            isChecked = true
+        }
 
         binding.buttonLogin.setOnClickListener{
            login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
@@ -57,8 +68,8 @@ class LoginFragment : Fragment() {
     private fun login(email: String, password: String){
         viewModel.login(email, password)?.observe(viewLifecycleOwner){ user ->
             user?.let {
-                openHomeActivity()
-            } ?: kotlin.run {0
+                openHomeActivity(user.email)
+            } ?: kotlin.run {
                 binding.errorText.visibility  = View.VISIBLE
             }
         }
@@ -74,9 +85,16 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun openHomeActivity() {
-        startActivity(Intent(requireContext(), HomeActivity::class.java))
+    private fun saveEmailChecked(){
+        if(binding.checkboxPassword.isChecked == true) isChecked = true
+    }
 
+    private fun openHomeActivity(email : String) {
+        if (!isChecked){
+            sharedPreference.saveData(SharedPreference.EMAIL, email)
+        }
+        startActivity(Intent(requireContext(), HomeActivity::class.java))
+        activity?.finish()
     }
 
     override fun onDestroyView() {
