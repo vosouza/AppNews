@@ -6,20 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.UserRepositoryImpl
-import com.evosouza.news.data.model.User
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentLoginBinding
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
 import com.evosouza.news.ui.login.loginfragment.viewmodel.LoginViewModel
 import com.evosouza.news.util.setError
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
@@ -44,15 +39,8 @@ class LoginFragment : Fragment() {
         val db = UserRepositoryImpl(NewsDB(requireContext()))
         viewModel = LoginViewModel.LoginViewModelProvider(db).create(LoginViewModel::class.java)
 
-        sharedPreference  = SharedPreference(requireContext())
-
-//        viewModel.insertUser(User("vini@a.com", "vini12", "123456", ""))
-
-        sharedPreference.getData(SharedPreference.EMAIL)?.let {
-            binding.emailTextEDT.setText(it)
-            binding.checkboxPassword.isChecked = true
-            isChecked = true
-        }
+        sharedPreference = SharedPreference(requireContext())
+        viewModel.getUserSavedEmail(sharedPreference)
 
         binding.buttonLogin.setOnClickListener{
            login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
@@ -68,14 +56,28 @@ class LoginFragment : Fragment() {
     private fun login(email: String, password: String){
         viewModel.login(email, password)?.observe(viewLifecycleOwner){ user ->
             user?.let {
-                openHomeActivity(user.email)
+                saveEmailText(user.email)
+                openHomeActivity()
             } ?: kotlin.run {
                 binding.errorText.visibility  = View.VISIBLE
             }
         }
     }
 
+    private fun saveEmailText(email: String) {
+        if (binding.checkboxPassword.isChecked){
+            viewModel.saveUserEmailLogin(email, sharedPreference)
+        }else{
+            viewModel.deleteUserEmailLogin(sharedPreference)
+        }
+    }
+
     private fun observeVmEvents(){
+
+        viewModel.userEmailSavedLogin.observe(viewLifecycleOwner){
+            binding.emailTextEDT.setText(it)
+        }
+
         viewModel.loginFieldErrorResId.observe(viewLifecycleOwner){
             binding.inputLayoutUserName.setError(requireContext(), it)
         }
@@ -85,14 +87,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun saveEmailChecked(){
-        if(binding.checkboxPassword.isChecked == true) isChecked = true
-    }
-
-    private fun openHomeActivity(email : String) {
-        if (!isChecked){
-            sharedPreference.saveData(SharedPreference.EMAIL, email)
-        }
+    private fun openHomeActivity() {
         startActivity(Intent(requireContext(), HomeActivity::class.java))
         activity?.finish()
     }

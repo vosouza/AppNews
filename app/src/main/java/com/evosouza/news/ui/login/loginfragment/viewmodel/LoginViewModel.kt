@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.evosouza.news.R
 import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
+import com.evosouza.news.data.sharedpreference.DataStorage
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val db: UserRepository): ViewModel() {
@@ -14,6 +16,9 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
 
     private val _passwordFieldErrorResId = MutableLiveData<Int?>()
     val passwordErrorResId : LiveData<Int?> = _passwordFieldErrorResId
+
+    private val _userEmailSavedLogin = MutableLiveData<String>()
+    val userEmailSavedLogin: LiveData<String> = _userEmailSavedLogin
 
     private var isValid: Boolean = false
 
@@ -41,6 +46,20 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
         } else null
 
     fun insertUser(user: User) = viewModelScope.launch { db.insert(user) }
+
+    fun getUserSavedEmail(database: DataStorage) {
+        database.getData(SharedPreference.EMAIL)?.let {
+            _userEmailSavedLogin.value = it
+        }
+    }
+
+    fun deleteUserEmailLogin(database: DataStorage) {
+        if (!_userEmailSavedLogin.value.isNullOrEmpty()) database.deleteData(SharedPreference.EMAIL)
+    }
+
+    fun saveUserEmailLogin(email: String, database: DataStorage) {
+        if (email.isNotEmpty()) database.saveData(SharedPreference.EMAIL, email)
+    }
 
     class LoginViewModelProvider(
         private val repository: UserRepository
