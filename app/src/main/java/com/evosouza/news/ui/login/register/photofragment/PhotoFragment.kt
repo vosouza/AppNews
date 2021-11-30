@@ -67,13 +67,12 @@ class PhotoFragment : Fragment() {
 
     private fun showWelcomeMessage() {
         val dialog = WelcomeDialog{
-            findNavController().navigate(R.id.action_photoFragment_to_loginFragment3)
+            findNavController().navigate(R.id.action_welcomeDialog_to_loginFragment)
         }
         dialog.show(parentFragmentManager, "WELCOME")
     }
 
     private fun saveUser() {
-//        if (imageUri != null) user.photo = imageUri!!.path
         imageUri?.let {
             user.photo = it.path
         }
@@ -81,6 +80,10 @@ class PhotoFragment : Fragment() {
     }
 
     private fun buttonClickListeners() {
+        binding.btnSkype.setOnClickListener {
+            findNavController().navigate(R.id.action_welcomeDialog_to_loginFragment)
+        }
+
         binding.profileImage.setOnClickListener {
             chooseImage()
         }

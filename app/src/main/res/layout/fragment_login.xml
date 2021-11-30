@@ -10,14 +10,16 @@
         android:id="@+id/logoImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="60dp"
         android:src="@drawable/logotipo"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutUserName"
@@ -65,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputLayoutPassword" />
 
     <CheckBox
-        android:id="@+id/checkboxPassword"
+        android:id="@+id/check_box_save_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -87,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="@+id/inputLayoutPassword"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/inputLayoutPassword"
-        app:layout_constraintTop_toBottomOf="@+id/checkboxPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/check_box_save_login" />
 
     <TextView
         android:id="@+id/textCreateAccount"

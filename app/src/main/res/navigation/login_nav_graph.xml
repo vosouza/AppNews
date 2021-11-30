@@ -38,7 +38,16 @@
         android:label="fragment_photo"
         tools:layout="@layout/fragment_photo" >
         <action
-            android:id="@+id/action_photoFragment_to_loginFragment3"
+            android:id="@+id/action_photoFragment_to_welcomeDialog"
+            app:destination="@id/welcomeDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeDialog"
+        android:name="com.evosouza.news.util.WelcomeDialog"
+        android:label="WelcomeDialog"
+        tools:layout="@layout/dialog_welcome">
+        <action
+            android:id="@+id/action_welcomeDialog_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 

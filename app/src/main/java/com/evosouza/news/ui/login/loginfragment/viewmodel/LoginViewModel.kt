@@ -58,7 +58,7 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
     }
 
     fun saveUserEmailLogin(email: String, database: DataStorage) {
-        if (email.isNotEmpty()) database.saveData(SharedPreference.EMAIL, email)
+        if (email != _userEmailSavedLogin.value) database.saveData(SharedPreference.EMAIL, email)
     }
 
     class LoginViewModelProvider(

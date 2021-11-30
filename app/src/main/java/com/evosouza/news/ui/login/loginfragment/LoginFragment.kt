@@ -22,7 +22,6 @@ class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
-    private var isChecked = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +64,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveEmailText(email: String) {
-        if (binding.checkboxPassword.isChecked){
+        if (binding.checkBoxSaveLogin.isChecked){
             viewModel.saveUserEmailLogin(email, sharedPreference)
         }else{
             viewModel.deleteUserEmailLogin(sharedPreference)
@@ -76,6 +75,7 @@ class LoginFragment : Fragment() {
 
         viewModel.userEmailSavedLogin.observe(viewLifecycleOwner){
             binding.emailTextEDT.setText(it)
+            if (it.isNotEmpty()) binding.checkBoxSaveLogin.isChecked = true
         }
 
         viewModel.loginFieldErrorResId.observe(viewLifecycleOwner){
