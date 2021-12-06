@@ -2,10 +2,10 @@ package com.evosouza.news.ui.login.loginfragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
@@ -41,8 +41,8 @@ class LoginFragment : Fragment() {
         sharedPreference = SharedPreference(requireContext())
         viewModel.getUserSavedEmail(sharedPreference)
 
-        binding.buttonLogin.setOnClickListener{
-           login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
+        binding.buttonLogin.setOnClickListener {
+            login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
         }
 
         binding.textCreateAccount.setOnClickListener {
@@ -52,39 +52,40 @@ class LoginFragment : Fragment() {
         observeVmEvents()
     }
 
-    private fun login(email: String, password: String){
-        viewModel.login(email, password)?.observe(viewLifecycleOwner){ user ->
+    private fun login(email: String, password: String) {
+        viewModel.login(email, password)?.observe(viewLifecycleOwner) { user ->
             user?.let {
                 saveEmailText(user.email)
                 openHomeActivity()
             } ?: kotlin.run {
-                binding.errorText.visibility  = View.VISIBLE
+                binding.errorText.visibility = View.VISIBLE
             }
         }
     }
 
     private fun saveEmailText(email: String) {
-        if (binding.checkBoxSaveLogin.isChecked){
+        if (binding.checkBoxSaveLogin.isChecked) {
             viewModel.saveUserEmailLogin(email, sharedPreference)
-        }else{
+        } else {
             viewModel.deleteUserEmailLogin(sharedPreference)
         }
     }
 
-    private fun observeVmEvents(){
+    private fun observeVmEvents() {
 
-        viewModel.userEmailSavedLogin.observe(viewLifecycleOwner){
+        viewModel.userEmailSavedLogin.observe(viewLifecycleOwner) {
             binding.emailTextEDT.setText(it)
             if (it.isNotEmpty()) binding.checkBoxSaveLogin.isChecked = true
         }
 
-        viewModel.loginFieldErrorResId.observe(viewLifecycleOwner){
+        viewModel.loginFieldErrorResId.observe(viewLifecycleOwner) {
             binding.inputLayoutUserName.setError(requireContext(), it)
         }
 
-        viewModel.passwordErrorResId.observe(viewLifecycleOwner){
+        viewModel.passwordErrorResId.observe(viewLifecycleOwner) {
             binding.inputLayoutPassword.setError(requireContext(), it)
         }
+
     }
 
     private fun openHomeActivity() {

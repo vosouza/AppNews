@@ -17,7 +17,6 @@ import com.evosouza.news.data.model.User
 import com.evosouza.news.databinding.FragmentPhotoBinding
 import com.evosouza.news.ui.login.register.photofragment.photoviewmodel.PhotoViewModel
 import com.evosouza.news.util.MessageDialog
-import com.evosouza.news.util.WelcomeDialog
 
 class PhotoFragment : Fragment() {
 
@@ -66,10 +65,7 @@ class PhotoFragment : Fragment() {
     }
 
     private fun showWelcomeMessage() {
-        val dialog = WelcomeDialog{
-            findNavController().navigate(R.id.action_welcomeDialog_to_loginFragment)
-        }
-        dialog.show(parentFragmentManager, "WELCOME")
+        navigateNextScreen()
     }
 
     private fun saveUser() {
@@ -81,7 +77,7 @@ class PhotoFragment : Fragment() {
 
     private fun buttonClickListeners() {
         binding.btnSkype.setOnClickListener {
-            findNavController().navigate(R.id.action_welcomeDialog_to_loginFragment)
+            showDialog()
         }
 
         binding.profileImage.setOnClickListener {
@@ -106,12 +102,15 @@ class PhotoFragment : Fragment() {
             "Do you want to continue?",
             "You have not choose a profile picture"
         ).apply {
-            setYesListener{
-                Toast.makeText(requireContext(), "next screen", Toast.LENGTH_SHORT).show()
+            setYesListener {
+                saveUser()
             }
 
         }.show(parentFragmentManager, "PhotoFragment")
     }
+
+    private fun navigateNextScreen() =
+        findNavController().navigate(R.id.action_photoFragment_to_welcomeFragment)
 
     private fun chooseImage() = getContent.launch("image/*")
 

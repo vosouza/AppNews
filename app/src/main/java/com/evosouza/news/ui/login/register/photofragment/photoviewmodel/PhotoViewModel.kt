@@ -1,9 +1,11 @@
 package com.evosouza.news.ui.login.register.photofragment.photoviewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class PhotoViewModel(
@@ -20,6 +22,7 @@ class PhotoViewModel(
             _saveResult.value = true
         } catch (e: Exception) {
             _saveResult.value = false
+            Timber.e(e)
         }
     }
 
