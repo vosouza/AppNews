@@ -16,7 +16,7 @@ import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
-import com.evosouza.news.ui.home.viewmodel.HomeViewModel
+import com.evosouza.news.ui.home.homefragment.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
 
 

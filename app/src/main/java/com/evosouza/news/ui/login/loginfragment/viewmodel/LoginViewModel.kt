@@ -9,7 +9,10 @@ import com.evosouza.news.data.sharedpreference.DataStorage
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val db: UserRepository): ViewModel() {
+class LoginViewModel(
+    private val db: UserRepository,
+    private val cacheStorage: DataStorage
+): ViewModel() {
 
     private val _userNameFieldErrorResId = MutableLiveData<Int?>()
     val loginFieldErrorResId : LiveData<Int?> = _userNameFieldErrorResId
@@ -47,26 +50,27 @@ class LoginViewModel(private val db: UserRepository): ViewModel() {
 
     fun insertUser(user: User) = viewModelScope.launch { db.insert(user) }
 
-    fun getUserSavedEmail(database: DataStorage) {
-        database.getData(SharedPreference.EMAIL)?.let {
+    fun getUserSavedEmail() {
+        cacheStorage.getData(SharedPreference.EMAIL)?.let {
             _userEmailSavedLogin.value = it
         }
     }
 
-    fun deleteUserEmailLogin(database: DataStorage) {
-        if (!_userEmailSavedLogin.value.isNullOrEmpty()) database.deleteData(SharedPreference.EMAIL)
+    fun deleteUserEmailLogin() {
+        if (!_userEmailSavedLogin.value.isNullOrEmpty()) cacheStorage.deleteData(SharedPreference.EMAIL)
     }
 
-    fun saveUserEmailLogin(email: String, database: DataStorage) {
-        if (email != _userEmailSavedLogin.value) database.saveData(SharedPreference.EMAIL, email)
+    fun saveUserEmailLogin(email: String) {
+        if (email != _userEmailSavedLogin.value) cacheStorage.saveData(SharedPreference.EMAIL, email)
     }
 
     class LoginViewModelProvider(
-        private val repository: UserRepository
+        private val repository: UserRepository,
+        private val cacheStorage: DataStorage
     ): ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LoginViewModel::class.java)){
-                return LoginViewModel(repository) as T
+                return LoginViewModel(repository, cacheStorage) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

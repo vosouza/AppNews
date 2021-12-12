@@ -1,4 +1,4 @@
-package com.evosouza.news.ui.home.viewmodel
+package com.evosouza.news.ui.home.homefragment.viewmodel
 
 import androidx.lifecycle.*
 import com.evosouza.news.core.State

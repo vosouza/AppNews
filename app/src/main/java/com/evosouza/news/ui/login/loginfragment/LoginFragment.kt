@@ -18,7 +18,6 @@ import com.evosouza.news.util.setError
 
 class LoginFragment : Fragment() {
 
-    private lateinit var sharedPreference: SharedPreference
     private lateinit var viewModel: LoginViewModel
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
@@ -36,10 +35,10 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val db = UserRepositoryImpl(NewsDB(requireContext()))
-        viewModel = LoginViewModel.LoginViewModelProvider(db).create(LoginViewModel::class.java)
+        val cache = SharedPreference(requireContext())
+        viewModel = LoginViewModel.LoginViewModelProvider(db, cache).create(LoginViewModel::class.java)
 
-        sharedPreference = SharedPreference(requireContext())
-        viewModel.getUserSavedEmail(sharedPreference)
+        viewModel.getUserSavedEmail()
 
         binding.buttonLogin.setOnClickListener {
             login(binding.emailTextEDT.text.toString(), binding.passwordEDT.text.toString())
@@ -49,6 +48,13 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_userNameFragment2)
         }
 
+        binding.checkBoxSaveLogin.setOnClickListener {
+            if (!binding.checkBoxSaveLogin.isChecked) viewModel.deleteUserEmailLogin()
+        }
+        val i = 10
+        for(count in i downTo 0 ){
+
+        }
         observeVmEvents()
     }
 
@@ -65,9 +71,9 @@ class LoginFragment : Fragment() {
 
     private fun saveEmailText(email: String) {
         if (binding.checkBoxSaveLogin.isChecked) {
-            viewModel.saveUserEmailLogin(email, sharedPreference)
+            viewModel.saveUserEmailLogin(email)
         } else {
-            viewModel.deleteUserEmailLogin(sharedPreference)
+            viewModel.deleteUserEmailLogin()
         }
     }
 
