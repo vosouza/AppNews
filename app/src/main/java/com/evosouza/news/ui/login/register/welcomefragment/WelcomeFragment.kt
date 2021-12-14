@@ -25,11 +25,13 @@ class WelcomeFragment : Fragment() {
     ): View? {
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
 
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                nextFragment()
-            }
-        })
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    nextFragment()
+                }
+            })
 
         return binding.root
     }
@@ -42,7 +44,7 @@ class WelcomeFragment : Fragment() {
         }
     }
 
-    private fun nextFragment(){
+    private fun nextFragment() {
         findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
     }
 
@@ -55,7 +57,5 @@ class WelcomeFragment : Fragment() {
                 binding.imageLogo.setImageResource(R.drawable.logo_com_fundo)
             }
     }
-    
-
 
 }
