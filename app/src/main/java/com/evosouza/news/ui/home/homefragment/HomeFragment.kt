@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { newsResponse ->
+                        setCarrousel(newsResponse.articles)
                         setRecyclerView(newsResponse.articles)
                     }
                     binding.swipeLayout.isRefreshing=false
@@ -70,6 +71,11 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setCarrousel(articles: List<Article>) {
+        binding.carrousel.setList(articles as MutableList<Article>)
+        binding.carrousel.setupCarrousel()
     }
 
     private fun setAdapter(list: List<Article>){

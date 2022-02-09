@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.homefragment.HomeFragment">
+
+        <com.evosouza.news.ui.widgets.carrousel.CustomCarrousel
+            android:id="@+id/carrousel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:autoStart="true"
+            android:flipInterval="3000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHeight_percent=".35"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeLayout"
@@ -13,7 +24,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/carrousel">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvHome"
                     android:layout_width="0dp"
@@ -22,17 +34,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    tools:listitem="@layout/item_news"/>
+                    tools:listitem="@layout/item_news" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progressBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            style="?attr/progressBarStyle"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/swipeLayout"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/swipeLayout"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/swipeLayout"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/swipeLayout" />-->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
