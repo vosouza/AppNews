@@ -9,6 +9,7 @@ import com.evosouza.news.databinding.ActivityHomeBinding
 import com.evosouza.news.databinding.ActivityLoginBinding
 import com.evosouza.news.databinding.FragmentArticleBinding
 import com.evosouza.news.ui.login.loginfragment.LoginFragment
+import com.google.firebase.FirebaseApp
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,15 +19,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 //        val navHost = supportFragmentManager.findFragmentById(R.id.navHostFragmentLogin)
 //                as NavHostFragment
 //        navController = navHost.navController
-//
-////        navController.navigate(R.layout.fragment_login)
+
+//        navController.navigate(R.layout.fragment_login)
 
     }
 
