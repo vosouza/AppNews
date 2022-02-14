@@ -3,46 +3,49 @@ package com.evosouza.news.ui.home.subjects.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.evosouza.news.core.State
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.evosouza.news.data.firebase.FirebaseDataSource
+import com.evosouza.news.data.model.SubjectsModel
+import com.evosouza.news.data.sharedpreference.SharedPreference
+import kotlinx.coroutines.*
 import timber.log.Timber
+import java.lang.Exception
 
-class SubjectChoseViewModel(private val dataBase: DatabaseReference): ViewModel() {
+class SubjectChoseViewModel(
+    private val ioDispatcher: CoroutineDispatcher,
+    private val dataBase: FirebaseDataSource,
+    private val cache: SharedPreference
+): ViewModel() {
 
-    private var _subjectList =  MutableLiveData<State<List<String>>>()
-    val subjectList: MutableLiveData<State<List<String>>> = _subjectList
+    private var _subjectList =  MutableLiveData<State<SubjectsModel>>()
+    val subjectList: MutableLiveData<State<SubjectsModel>> = _subjectList
 
-    fun getSubjects(){
+    fun getSubjects() = viewModelScope.launch{
         _subjectList.value = State.loading(true)
-        dataBase.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<String>()
-                val hash = snapshot.value as HashMap<*, *>
-
-                try{
-                    (hash["subjects"] as ArrayList<String>).forEach {
-                        list.add(it)
-                    }
-                }catch (e: Exception){
-                    Timber.e(e)
-                }
-                _subjectList.value = State.success(list)
+        try {
+            val list = withContext(ioDispatcher){
+                dataBase.getValues()
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                _subjectList.value = State.error(IllegalStateException(error.message))
-            }
-
-        })
+            _subjectList.value = State.success(list)
+        }catch (e : Exception){
+            _subjectList.value = State.error(e)
+            Timber.e(e)
+        }
     }
 
-    class SubjectChooseViewModelProviderFactory(val dataBase: DatabaseReference) : ViewModelProvider.Factory{
+    fun saveInterestsList(list: SubjectsModel){
+        cache.saveData(SharedPreference.INTERESTS, list.toString())
+    }
+
+    class SubjectChooseViewModelProviderFactory(
+        private val ioDispatcher: CoroutineDispatcher,
+        val dataBase: FirebaseDataSource,
+        val cache: SharedPreference
+    ) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if(modelClass.isAssignableFrom(SubjectChoseViewModel::class.java)){
-                return SubjectChoseViewModel(dataBase) as T
+                return SubjectChoseViewModel(ioDispatcher, dataBase, cache) as T
             }
             throw IllegalArgumentException("Unknown ViewModel Class")
         }

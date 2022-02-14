@@ -51,10 +51,7 @@ class LoginFragment : Fragment() {
         binding.checkBoxSaveLogin.setOnClickListener {
             if (!binding.checkBoxSaveLogin.isChecked) viewModel.deleteUserEmailLogin()
         }
-        val i = 10
-        for(count in i downTo 0 ){
 
-        }
         observeVmEvents()
     }
 

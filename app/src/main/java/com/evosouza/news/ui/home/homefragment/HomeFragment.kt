@@ -42,13 +42,18 @@ class HomeFragment : Fragment() {
         val newsRepository = NewsRepositoryImpl(ApiService.service)
         viewModel = HomeViewModel.HomeViewModelProviderFactory(Dispatchers.IO, newsRepository).create(HomeViewModel::class.java)
 
-        getNews()
         observeVMEvents()
+        getNews()
+        getSubjects()
 
         binding.swipeLayout.setOnRefreshListener {
             getNews()
         }
 
+    }
+
+    private fun getSubjects() {
+        viewModel.getSubjects()
     }
 
     private fun observeVMEvents() {

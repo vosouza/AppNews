@@ -5,20 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.evosouza.news.R
 import com.evosouza.news.core.Status
+import com.evosouza.news.data.firebase.FirebaseDataSourceImpl
+import com.evosouza.news.data.model.SubjectsModel
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentSubjectChoseBinding
 import com.evosouza.news.ui.home.subjects.viewmodel.SubjectChoseViewModel
 import com.google.android.material.chip.Chip
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 
 class SubjectChoseFragment : Fragment() {
 
     lateinit var binding: FragmentSubjectChoseBinding
     lateinit var viewModel: SubjectChoseViewModel
-    lateinit var dataBase: DatabaseReference
+    lateinit var interests: SubjectsModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +33,23 @@ class SubjectChoseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataBase = Firebase.database.reference
-        viewModel = SubjectChoseViewModel.SubjectChooseViewModelProviderFactory(dataBase).create(SubjectChoseViewModel::class.java)
+        val cache = SharedPreference(requireContext())
+        val data = FirebaseDataSourceImpl()
+        viewModel = SubjectChoseViewModel.SubjectChooseViewModelProviderFactory(Dispatchers.IO, data, cache)
+            .create(SubjectChoseViewModel::class.java)
 
         observeViewModel()
+        setButtonClick()
 
         viewModel.getSubjects()
+
+    }
+
+    private fun setButtonClick() {
+        binding.btnNext.setOnClickListener {
+            viewModel.saveInterestsList(interests)
+            findNavController().navigate(R.id.action_subjectChoseFragment_to_homeFragment)
+        }
     }
 
     private fun observeViewModel(){
@@ -49,7 +62,10 @@ class SubjectChoseFragment : Fragment() {
                 Status.SUCCESS->{
                     binding.progressBar.visibility = View.GONE
                     binding.scrollView2.visibility = View.VISIBLE
-                    populateChipsView(data.data)
+                    data.data?.let {
+                        interests = it
+                        populateChipsView(it)
+                    }
                 }
                 Status.ERROR->{
                     binding.progressBar.visibility = View.GONE
@@ -58,10 +74,12 @@ class SubjectChoseFragment : Fragment() {
         }
     }
 
-    private fun populateChipsView(chipList: List<String>?) {
-        if (chipList != null) {
+    private fun populateChipsView(list: SubjectsModel) {
+        val chipList = list.subjects
+        chipList.let {
             for (item in chipList) {
-                val chip = LayoutInflater.from(context).inflate(R.layout.chip_choice, binding.root, false) as Chip
+                val chip = LayoutInflater.from(context)
+                    .inflate(R.layout.chip_choice, binding.root, false) as Chip
                 chip.text = item
                 binding.chipGroup.addView(chip)
                 chip.setOnClickListener { binding.btnNext.isEnabled = true }
