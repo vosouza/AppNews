@@ -14,6 +14,7 @@ import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.homefragment.viewmodel.HomeViewModel
@@ -30,7 +31,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,7 +41,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val newsRepository = NewsRepositoryImpl(ApiService.service)
-        viewModel = HomeViewModel.HomeViewModelProviderFactory(Dispatchers.IO, newsRepository).create(HomeViewModel::class.java)
+        val cache = SharedPreference(requireContext())
+        viewModel = HomeViewModel.HomeViewModelProviderFactory(
+            Dispatchers.IO,
+            newsRepository,
+            cache
+        ).create(HomeViewModel::class.java)
 
         observeVMEvents()
         getNews()
@@ -64,7 +70,7 @@ class HomeFragment : Fragment() {
                         setCarrousel(newsResponse.articles)
                         setRecyclerView(newsResponse.articles)
                     }
-                    binding.swipeLayout.isRefreshing=false
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), "Erro: ${it.error}", Toast.LENGTH_SHORT).show()
@@ -76,6 +82,20 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.interests.observe(viewLifecycleOwner){ list ->
+            when (list.status) {
+                Status.SUCCESS -> {
+                    viewModel.getListOfInterest()
+                }
+                Status.ERROR -> {
+                    //fazer alguma coisa
+                }
+                Status.LOADING -> {
+                    //fazer alguma outra coisa
+                }
+            }
+        }
     }
 
     private fun setCarrousel(articles: List<Article>) {
@@ -83,22 +103,22 @@ class HomeFragment : Fragment() {
         binding.carrousel.setupCarrousel()
     }
 
-    private fun setAdapter(list: List<Article>){
-        newsAdapter = NewsAdapter(list){ article ->
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment, Bundle().apply {
-                putSerializable("article", article)
-            })
+    private fun setAdapter(list: List<Article>) {
+        newsAdapter = NewsAdapter(list) { article ->
+            findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
+                Bundle().apply {
+                    putSerializable("article", article)
+                })
         }
     }
 
-    private fun setRecyclerView(list: List<Article>){
+    private fun setRecyclerView(list: List<Article>) {
         setAdapter(list)
-        with(binding.rvHome){
+        with(binding.rvHome) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = newsAdapter
         }
-
     }
 
     private fun getNews() {

@@ -35,13 +35,13 @@ class SubjectChoseViewModel(
     }
 
     fun saveInterestsList(list: SubjectsModel){
-        cache.saveData(SharedPreference.INTERESTS, list.toString())
+        cache.saveStringSet(SharedPreference.INTERESTS, list.subjects.toSet())
     }
 
     class SubjectChooseViewModelProviderFactory(
         private val ioDispatcher: CoroutineDispatcher,
         val dataBase: FirebaseDataSource,
-        val cache: SharedPreference
+        private val cache: SharedPreference
     ) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if(modelClass.isAssignableFrom(SubjectChoseViewModel::class.java)){

@@ -22,6 +22,16 @@ class SharedPreference(context: Context): DataStorage {
         editor.apply()
     }
 
+    override fun saveStringSet(key: String, data: Set<String>) {
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putStringSet(key, data)
+        editor.apply()
+    }
+
+    override fun getStringSet(key: String): Set<String>
+    = sharedPref.getStringSet(key, setOf()) as Set<String>
+
+
     override fun deleteData(key: String) {
         sharedPref.edit().remove(key).apply()
     }

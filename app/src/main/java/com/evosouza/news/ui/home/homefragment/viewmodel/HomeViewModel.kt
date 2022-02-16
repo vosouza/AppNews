@@ -1,6 +1,5 @@
 package com.evosouza.news.ui.home.homefragment.viewmodel
 
-import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.evosouza.news.core.State
 import com.evosouza.news.data.model.NewsResponse
@@ -15,6 +14,10 @@ class HomeViewModel(
     private val repository: NewsRepository,
     private val cache: SharedPreference,
 ) : ViewModel() {
+
+    private val _interests = MutableLiveData<State<List<String>>>()
+    val interests: LiveData<State<List<String>>>
+        get() = _interests
 
     private val _response = MutableLiveData<State<NewsResponse>>()
     val response: LiveData<State<NewsResponse>>
@@ -32,8 +35,42 @@ class HomeViewModel(
         }
     }
 
-    fun getSubjects() {
-        val subjects = cache.getData(SharedPreference.INTERESTS)
+    fun getSubjects() = viewModelScope.launch {
+        try {
+            _interests.value = State.loading(true)
+            val response = withContext(ioDispatcher){
+                cache.getStringSet(SharedPreference.INTERESTS)
+            }
+
+            val list = mutableListOf<String>()
+            response.forEach {
+                list.add(it)
+            }
+
+            _interests.value = State.success(list)
+        } catch (throwable: Throwable){
+            _interests.value = State.error(throwable)
+        }
+    }
+
+    fun getListOfInterest() {
+//        viewModelScope.launch {
+//            try {
+//                _interests.value = State.loading(true)
+//                val response = withContext(ioDispatcher){
+//                    cache.getStringSet(SharedPreference.INTERESTS)
+//                }
+//
+//                val list = mutableListOf<String>()
+//                response.forEach {
+//                    list.add(it)
+//                }
+//
+//                _interests.value = State.success(list)
+//            } catch (throwable: Throwable){
+//                _response.value = State.error(throwable)
+//            }
+//        }
     }
 
     class HomeViewModelProviderFactory(
