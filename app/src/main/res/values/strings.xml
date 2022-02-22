@@ -36,4 +36,5 @@
     <string name="remember_me">Remember me</string>
     <string name="select_at_least_1_subject">Select at least 1 subject</string>
     <string name="top_headlines">Top Headlines</string>
+    <string name="interests">Interests</string>
 </resources>

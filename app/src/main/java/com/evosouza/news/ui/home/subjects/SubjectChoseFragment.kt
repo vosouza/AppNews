@@ -47,9 +47,18 @@ class SubjectChoseFragment : Fragment() {
 
     private fun setButtonClick() {
         binding.btnNext.setOnClickListener {
-            viewModel.saveInterestsList(interests)
-            findNavController().navigate(R.id.action_subjectChoseFragment_to_homeFragment)
+            viewModel.saveInterestsList(getSelectedChips())
+            findNavController().navigate(R.id.action_subjectChoseFragment_to_loginFragment)
         }
+    }
+
+    private fun getSelectedChips(): SubjectsModel {
+        val list = mutableListOf<String>()
+        binding.chipGroup.checkedChipIds.forEach {
+            val text = (binding.chipGroup.getChildAt(it) as Chip).text
+            list.add(text.toString())
+        }
+        return SubjectsModel(list)
     }
 
     private fun observeViewModel(){

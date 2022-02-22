@@ -35,6 +35,7 @@ class SubjectChoseViewModel(
     }
 
     fun saveInterestsList(list: SubjectsModel){
+        cache.deleteData(SharedPreference.INTERESTS)
         cache.saveStringSet(SharedPreference.INTERESTS, list.subjects.toSet())
     }
 
