@@ -12,14 +12,16 @@ import com.evosouza.news.BuildConfig
 import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
+import com.evosouza.news.data.model.SubjectAdapterModel
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentHomeBinding
+import com.evosouza.news.ui.home.adapter.InterestNewsAdapter
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.homefragment.viewmodel.HomeViewModel
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
-import timber.log.Timber
 
 
 class HomeFragment : Fragment() {
@@ -28,6 +30,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var interestNewsAdapter: InterestNewsAdapter
+    private lateinit var newsList: List<Article>
+    private lateinit var interestNewsList: List<SubjectAdapterModel>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +57,36 @@ class HomeFragment : Fragment() {
         observeVMEvents()
         getNews()
         getSubjects()
+        setTabLayoutClick()
 
         binding.swipeLayout.setOnRefreshListener {
             getNews()
         }
 
+    }
+
+    private fun setTabLayoutClick() {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.text){
+                    getText(R.string.top_headlines) -> {
+                        setRecyclerViewForBreakingNews(newsList)
+                    }
+                    getText(R.string.interests) -> {
+                        setRecyclerViewForInterestNews(interestNewsList)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // n sei
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //n sei
+            }
+
+        })
     }
 
     private fun getSubjects() {
@@ -69,7 +99,8 @@ class HomeFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { newsResponse ->
                         setCarrousel(newsResponse.articles)
-                        setRecyclerView(newsResponse.articles)
+                        setRecyclerViewForBreakingNews(newsResponse.articles)
+                        newsList = newsResponse.articles
                     }
                     binding.swipeLayout.isRefreshing = false
                 }
@@ -101,7 +132,9 @@ class HomeFragment : Fragment() {
         viewModel.newsListOfInterests.observe(viewLifecycleOwner){list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    Timber.d(list.data.toString())
+                    list.data?.let{
+                        interestNewsList = it
+                    }
                 }
                 Status.ERROR -> {
                     //fazer alguma coisa
@@ -118,7 +151,16 @@ class HomeFragment : Fragment() {
         binding.carrousel.setupCarrousel()
     }
 
-    private fun setAdapter(list: List<Article>) {
+    private fun setRecyclerViewForBreakingNews(list: List<Article>) {
+        setAdapterBreakingNews(list)
+        with(binding.rvHome) {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = newsAdapter
+        }
+    }
+
+    private fun setAdapterBreakingNews(list: List<Article>) {
         newsAdapter = NewsAdapter(list) { article ->
             findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
                 Bundle().apply {
@@ -127,12 +169,22 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerView(list: List<Article>) {
-        setAdapter(list)
+    private fun setRecyclerViewForInterestNews(list: List<SubjectAdapterModel>) {
+        setAdapterInterestsNewsNews(list)
         with(binding.rvHome) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            adapter = newsAdapter
+            adapter = interestNewsAdapter
+
+        }
+    }
+
+    private fun setAdapterInterestsNewsNews(list: List<SubjectAdapterModel>) {
+        interestNewsAdapter = InterestNewsAdapter(list) { article ->
+            findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
+                Bundle().apply {
+                    putSerializable("article", article)
+                })
         }
     }
 

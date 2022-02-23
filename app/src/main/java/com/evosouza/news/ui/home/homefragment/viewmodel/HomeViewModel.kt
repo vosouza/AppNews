@@ -2,8 +2,10 @@ package com.evosouza.news.ui.home.homefragment.viewmodel
 
 import androidx.lifecycle.*
 import com.evosouza.news.core.State
+import com.evosouza.news.data.model.HeaderTitle
 import com.evosouza.news.data.model.InterestNews
 import com.evosouza.news.data.model.NewsResponse
+import com.evosouza.news.data.model.SubjectAdapterModel
 import com.evosouza.news.data.repository.NewsRepository
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import kotlinx.coroutines.*
@@ -15,8 +17,8 @@ class HomeViewModel(
     private val cache: SharedPreference,
 ) : ViewModel() {
 
-    private val _newsListOfInterests = MutableLiveData<State<List<InterestNews>>>()
-    val newsListOfInterests: LiveData<State<List<InterestNews>>>
+    private val _newsListOfInterests = MutableLiveData<State<List<SubjectAdapterModel>>>()
+    val newsListOfInterests: LiveData<State<List<SubjectAdapterModel>>>
         get() = _newsListOfInterests
 
     private val _interests = MutableLiveData<State<List<String>>>()
@@ -68,14 +70,20 @@ class HomeViewModel(
                             repository.getNewsBySubject(subject, apiKey).run {
                                 InterestNews(
                                     this,
-                                    subject
+                                    HeaderTitle(subject)
                                 )
                             }
                         }
                     )
                 }
 
-                val response = deferredList.awaitAll() as List<InterestNews>
+                val response = mutableListOf<SubjectAdapterModel>()
+                    (deferredList.awaitAll() as List<InterestNews>).forEach { interest ->
+                    response.add(interest.subject)
+                    interest.news.articles.forEach { article ->
+                        response.add(article)
+                    }
+                }
 
 
                 _newsListOfInterests.value = State.success(response)
