@@ -59,8 +59,6 @@ Kapp/src/main/java/com/evosouza/news/ui/login/loginactivity/LoginActivity.kt,0\
 Kapp/src/main/java/com/evosouza/news/ui/login/loginfragment/LoginFragment.kt,9\1\9140fe0c9d62fbce874560e7078b8a33646f9e5d
 x
 Happ/src/main/java/com/evosouza/news/data/sharedpreference/DataStorage.kt,f\2\f22862152eae313a9aecd8c8f0f09507294dd5af
-{
-Kapp/src/main/java/com/evosouza/news/ui/widgets/carrousel/CustomCarrousel.kt,3\3\331bd4f4902890c3cfe547bf5b0a8e5968ab8f45
 x
 Happ/src/main/java/com/evosouza/news/ui/home/homeactivity/HomeActivity.kt,9\5\95c35e0a82b8c269a4c47995ba3dc5f515e81d81
 ?
@@ -73,8 +71,6 @@ Xapp/src/main/java/com/evosouza/news/ui/login/register/welcomefragment/WelcomeFr
 Lapp/src/main/java/com/evosouza/news/ui/home/subjects/SubjectChoseFragment.kt,7\7\778df5d21536ec941f5aa578498b0d343ff29d23
 ‡
 Wapp/src/main/java/com/evosouza/news/ui/home/subjects/viewmodel/SubjectChoseViewModel.kt,e\e\ee3988f28af75c49ccc363269e8822e1ebdcd17e
-u
-Eapp/src/main/java/com/evosouza/news/data/repository/NewsRepository.kt,1\7\173aa0b7776f3a064471872b006973294096cec4
 y
 Iapp/src/main/java/com/evosouza/news/data/repository/NewsRepositoryImpl.kt,1\a\1afd588d21441b18fc2755f81ed4bac086cdeae0
 k

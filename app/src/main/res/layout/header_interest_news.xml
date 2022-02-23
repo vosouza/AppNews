@@ -4,17 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
         android:textAlignment="center"
-        android:textSize="16sp"
-        tools:text="Intersts"/>
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-smallcaps"
+        tools:text="Interests"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/newsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_news_vertical"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

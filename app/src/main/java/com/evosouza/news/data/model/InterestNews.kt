@@ -7,6 +7,4 @@ data class InterestNews(
 
 data class HeaderTitle(
     val title: String
-): SubjectAdapterModel
-
-interface SubjectAdapterModel
+)
