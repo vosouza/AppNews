@@ -2,7 +2,6 @@ package com.evosouza.news.ui.home.homefragment.viewmodel
 
 import androidx.lifecycle.*
 import com.evosouza.news.core.State
-import com.evosouza.news.data.model.HeaderTitle
 import com.evosouza.news.data.model.InterestNews
 import com.evosouza.news.data.model.NewsResponse
 import com.evosouza.news.data.repository.NewsRepository
@@ -67,7 +66,7 @@ class HomeViewModel(
                     deferredList.add(
                         async{
                             repository.getNewsBySubject(subject, apiKey).run {
-                                InterestNews(this, HeaderTitle(subject))
+                                InterestNews(this, subject)
                             }
                         }
                     )

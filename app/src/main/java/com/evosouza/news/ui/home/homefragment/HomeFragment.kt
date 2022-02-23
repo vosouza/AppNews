@@ -12,7 +12,7 @@ import com.evosouza.news.BuildConfig
 import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
-import com.evosouza.news.data.model.SubjectAdapterModel
+import com.evosouza.news.data.model.InterestNews
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.data.sharedpreference.SharedPreference
@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var interestNewsAdapter: InterestNewsAdapter
     private lateinit var newsList: List<Article>
-    private lateinit var interestNewsList: List<SubjectAdapterModel>
+    private lateinit var interestNewsList: List<InterestNews>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -169,7 +169,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerViewForInterestNews(list: List<SubjectAdapterModel>) {
+    private fun setRecyclerViewForInterestNews(list: List<InterestNews>) {
         setAdapterInterestsNewsNews(list)
         with(binding.rvHome) {
             layoutManager = LinearLayoutManager(requireContext())
@@ -179,7 +179,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setAdapterInterestsNewsNews(list: List<SubjectAdapterModel>) {
+    private fun setAdapterInterestsNewsNews(list: List<InterestNews>) {
         interestNewsAdapter = InterestNewsAdapter(list) { article ->
             findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
                 Bundle().apply {
