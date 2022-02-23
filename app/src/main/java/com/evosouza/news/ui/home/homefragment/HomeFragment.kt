@@ -19,6 +19,7 @@ import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.homefragment.viewmodel.HomeViewModel
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 
 
 class HomeFragment : Fragment() {
@@ -86,7 +87,21 @@ class HomeFragment : Fragment() {
         viewModel.interests.observe(viewLifecycleOwner){ list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    viewModel.getListOfInterest()
+                    viewModel.getListOfInterest(BuildConfig.API_KEY)
+                }
+                Status.ERROR -> {
+                    //fazer alguma coisa
+                }
+                Status.LOADING -> {
+                    //fazer alguma outra coisa
+                }
+            }
+        }
+
+        viewModel.newsListOfInterests.observe(viewLifecycleOwner){list ->
+            when (list.status) {
+                Status.SUCCESS -> {
+                    Timber.d(list.data.toString())
                 }
                 Status.ERROR -> {
                     //fazer alguma coisa
