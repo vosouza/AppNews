@@ -1,7 +1,6 @@
 package com.evosouza.news.ui.home.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,8 +25,8 @@ class VerticalItemNewsAdapter(
     override fun getItemCount(): Int = articles.count()
 
     class VerticalViewHolder(
-        val itemView: ItemNewsVerticalBinding,
-        val itemClicked : (article: Article)->Unit
+        itemView: ItemNewsVerticalBinding,
+        private val itemClicked : (article: Article)->Unit
     ) : RecyclerView.ViewHolder(itemView.root) {
 
         fun bind(article: Article){
