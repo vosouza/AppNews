@@ -1,13 +1,15 @@
 package com.evosouza.news.ui.login.loginfragment.viewmodel
 
 import android.util.Patterns
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.evosouza.news.R
 import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
 import com.evosouza.news.data.sharedpreference.DataStorage
 import com.evosouza.news.data.sharedpreference.SharedPreference
-import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val db: UserRepository,
@@ -48,7 +50,7 @@ class LoginViewModel(
             R.string.empty_password
         } else null
 
-    fun insertUser(user: User) = viewModelScope.launch { db.insert(user) }
+//    fun insertUser(user: User) = viewModelScope.launch { db.insert(user) }
 
     fun getUserSavedEmail() {
         cacheStorage.getData(SharedPreference.EMAIL)?.let {
@@ -62,6 +64,10 @@ class LoginViewModel(
 
     fun saveUserEmailLogin(email: String) {
         if (email != _userEmailSavedLogin.value) cacheStorage.saveData(SharedPreference.EMAIL, email)
+    }
+
+    fun saveUserID(id: Long) {
+        cacheStorage.saveIntegerData(SharedPreference.USERID, id)
     }
 
     class LoginViewModelProvider(

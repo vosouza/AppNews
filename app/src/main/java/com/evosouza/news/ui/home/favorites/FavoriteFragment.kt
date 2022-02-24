@@ -11,6 +11,7 @@ import com.evosouza.news.R
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentFavoriteBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.favorites.viewmodel.FavoritesViewModel
@@ -21,12 +22,12 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding: FragmentFavoriteBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
+    private var userID : Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         _binding = FragmentFavoriteBinding.inflate(inflater,container, false)
         // Inflate the layout for this fragment
         return binding.root
@@ -35,15 +36,19 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val repository = DBRepositoryImpl(NewsDB(requireContext()))
-        viewModel = FavoritesViewModel.FavoritesViewModelProviderFactory(repository).create(FavoritesViewModel::class.java)
 
-        viewModel.getAllArticles().observe(viewLifecycleOwner){ listArticles ->
-            listArticles?.let {
-                setRecyclerView(it)
+        val repository = DBRepositoryImpl(NewsDB(requireContext()))
+        val cache = SharedPreference(requireContext())
+        viewModel = FavoritesViewModel.FavoritesViewModelProviderFactory(cache, repository).create(FavoritesViewModel::class.java)
+        userID = viewModel.getUserId()
+
+        userID?.let { id ->
+            viewModel.getAllArticles(id).observe(viewLifecycleOwner){ listArticles ->
+                listArticles?.let {
+                    setRecyclerView(it)
+                }
             }
         }
-
     }
 
     private fun setRecyclerView(list: List<Article>) {

@@ -10,8 +10,8 @@ interface NewsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(article: Article)
 
-    @Query("SELECT * FROM articles")
-    fun getAllArticles(): LiveData<List<Article>>
+    @Query("SELECT * FROM articles WHERE userId = :id")
+    fun getAllArticles(id: Long): LiveData<List<Article>>
 
     @Delete
     suspend fun deleteArticle(article: Article)

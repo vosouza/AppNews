@@ -7,5 +7,6 @@ interface DataStorage {
     fun saveStringSet(key: String, data:  Set<String>)
     fun getStringSet(key: String): Set<String>
     fun deleteData(key: String)
-
+    fun saveIntegerData(key: String, value: Long)
+    fun getIntegerData(key: String): Long
 }

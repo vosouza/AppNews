@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.DBRepositoryImpl
 import com.evosouza.news.data.model.Article
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentArticleBinding
 import com.evosouza.news.ui.home.article.viewmodel.ArticleViewModel
 
@@ -19,11 +20,12 @@ class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding: FragmentArticleBinding get() = _binding!!
     private lateinit var article: Article
+    private var userID: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,7 +36,10 @@ class ArticleFragment : Fragment() {
         article = arguments?.getSerializable("article") as Article
 
         val repository = DBRepositoryImpl(NewsDB(requireContext()))
-        viewModel = ArticleViewModel.ArticleViewModelProviderFactory(repository).create(ArticleViewModel::class.java)
+        val cache = SharedPreference(requireContext())
+        viewModel = ArticleViewModel.ArticleViewModelProviderFactory(cache, repository).create(ArticleViewModel::class.java)
+
+        userID = viewModel.getUserId()
 
         binding.webView.apply {
             webViewClient = WebViewClient()
@@ -42,6 +47,7 @@ class ArticleFragment : Fragment() {
         }
 
         binding.fab.setOnClickListener {
+            userID?.let { article.userId = it }
             viewModel.saveArticle(article)
             Toast.makeText(requireContext(), "artigo salvo", Toast.LENGTH_SHORT).show()
         }

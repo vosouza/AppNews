@@ -9,6 +9,8 @@ class SharedPreference(context: Context): DataStorage {
         private const val CACHENAME = "NEWSAPPCACHE"
         const val EMAIL = "EMAIL"
         const val INTERESTS = "INTERESTS"
+        const val USERID = "USERID"
+        const val USERINVALID = -1
     }
 
     private val sharedPref : SharedPreferences = context.getSharedPreferences(CACHENAME, Context.MODE_PRIVATE)
@@ -16,11 +18,20 @@ class SharedPreference(context: Context): DataStorage {
     override fun getData(key: String): String? =
         sharedPref.getString(key, "")
 
-    override fun saveData(key: String, values: String) {
+    override fun saveData(key: String, email: String) {
         val editor: SharedPreferences.Editor = sharedPref.edit()
-        editor.putString(key, values)
+        editor.putString(key, email)
         editor.apply()
     }
+
+    override fun saveIntegerData(key: String, value: Long){
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putLong(key, value)
+        editor.apply()
+    }
+
+    override fun getIntegerData(key: String): Long =
+        sharedPref.getLong(key, USERINVALID.toLong())
 
     override fun saveStringSet(key: String, data: Set<String>) {
         val editor: SharedPreferences.Editor = sharedPref.edit()

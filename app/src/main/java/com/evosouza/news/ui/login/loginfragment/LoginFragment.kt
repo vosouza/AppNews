@@ -59,6 +59,7 @@ class LoginFragment : Fragment() {
         viewModel.login(email, password)?.observe(viewLifecycleOwner) { user ->
             user?.let {
                 saveEmailText(user.email)
+                saveUserId(user.id)
                 openHomeActivity()
             } ?: kotlin.run {
                 binding.errorText.visibility = View.VISIBLE
@@ -72,6 +73,10 @@ class LoginFragment : Fragment() {
         } else {
             viewModel.deleteUserEmailLogin()
         }
+    }
+
+    private fun saveUserId(id: Long){
+        viewModel.saveUserID(id)
     }
 
     private fun observeVmEvents() {

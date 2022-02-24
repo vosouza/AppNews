@@ -9,6 +9,6 @@ interface DBRepository {
 
     suspend fun delete(article: Article)
 
-    fun getAllArticles(): LiveData<List<Article>>
+    fun getAllArticles(id: Long): LiveData<List<Article>>
 
 }

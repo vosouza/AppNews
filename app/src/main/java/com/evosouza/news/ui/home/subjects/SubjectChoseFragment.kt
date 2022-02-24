@@ -20,7 +20,7 @@ class SubjectChoseFragment : Fragment() {
 
     lateinit var binding: FragmentSubjectChoseBinding
     lateinit var viewModel: SubjectChoseViewModel
-    lateinit var interests: SubjectsModel
+    private lateinit var interests: SubjectsModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,8 +55,10 @@ class SubjectChoseFragment : Fragment() {
     private fun getSelectedChips(): SubjectsModel {
         val list = mutableListOf<String>()
         binding.chipGroup.checkedChipIds.forEach {
-            val text = (binding.chipGroup.getChildAt(it) as Chip).text
-            list.add(text.toString())
+            binding.chipGroup.getChildAt(it)?.let { chip ->
+                val text = ( chip as Chip).text
+                list.add(text.toString())
+            }
         }
         return SubjectsModel(list)
     }
