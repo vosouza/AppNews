@@ -1,6 +1,7 @@
 package com.evosouza.news.ui.login.register.photofragment
 
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,18 +18,20 @@ import com.evosouza.news.data.model.User
 import com.evosouza.news.databinding.FragmentPhotoBinding
 import com.evosouza.news.ui.login.register.photofragment.photoviewmodel.PhotoViewModel
 import com.evosouza.news.util.MessageDialog
+import com.evosouza.news.util.bitmapToString
 
 class PhotoFragment : Fragment() {
 
     private lateinit var binding: FragmentPhotoBinding
     private lateinit var viewModel: PhotoViewModel
     private lateinit var user: User
-    private var imageUri: Uri? = null
+    private var imageBitmap: Bitmap? = null
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            imageUri = uri
-            binding.profileImage.setImageURI(imageUri)
+            val imaStream = requireActivity().contentResolver.openInputStream(uri)
+            imageBitmap = BitmapFactory.decodeStream(imaStream)
+            binding.profileImage.setImageBitmap(imageBitmap)
         }
 
     override fun onCreateView(
@@ -69,8 +72,8 @@ class PhotoFragment : Fragment() {
     }
 
     private fun saveUser() {
-        imageUri?.let {
-            user.photo = it.path
+        imageBitmap?.let {
+            user.photo = it.bitmapToString()
         }
         viewModel.saveUser(user)
     }
@@ -85,7 +88,7 @@ class PhotoFragment : Fragment() {
         }
 
         binding.buttonNext.setOnClickListener {
-            if (imageUri != null) {
+            if (imageBitmap != null) {
                 saveUser()
             } else {
                 showDialog()

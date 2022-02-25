@@ -6,8 +6,8 @@ import java.io.Serializable
 
 @Entity(tableName = "user")
 data class User(
-    val email: String,
-    val userName: String,
+    var email: String,
+    var userName: String,
     var password: String,
     var photo: String?
     //pesquisar tipo foto
