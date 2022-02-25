@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_homeFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_subjectChoseFragment"
+            app:destination="@id/subjectChoseFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
@@ -43,7 +46,12 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_profileFragment_to_articleFragment"
-            app:destination="@id/articleFragment" />
+            android:id="@+id/action_profileFragment_to_subjectChoseFragment"
+            app:destination="@id/subjectChoseFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/subjectChoseFragment"
+        android:name="com.evosouza.news.ui.home.subjects.SubjectChoseFragment"
+        android:label="SubjectChoseFragment"
+        tools:layout="@layout/fragment_subject_chose"/>
 </navigation>

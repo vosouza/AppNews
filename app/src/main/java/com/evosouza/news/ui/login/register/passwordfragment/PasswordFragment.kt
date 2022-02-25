@@ -10,7 +10,7 @@ import com.evosouza.news.R
 import com.evosouza.news.data.model.User
 import com.evosouza.news.databinding.FragmentPasswordBinding
 import com.evosouza.news.ui.login.register.passwordfragment.viewmodel.PasswordViewModel
-import com.evosouza.news.util.setError
+import com.evosouza.news.util.setErrorResId
 
 class PasswordFragment : Fragment() {
 
@@ -51,10 +51,10 @@ class PasswordFragment : Fragment() {
 
     private fun observeVM() {
         viewModel.confirmPasswordResId.observe(viewLifecycleOwner){
-            binding.inputLayoutConfirmPassword.setError(requireContext(), it)
+            binding.inputLayoutConfirmPassword.setErrorResId(requireContext(), it)
         }
         viewModel.passwordErrorResId.observe(viewLifecycleOwner){
-            binding.inputLayoutPassword.setError(requireContext(), it)
+            binding.inputLayoutPassword.setErrorResId(requireContext(), it)
         }
         viewModel.passwordValid.observe(viewLifecycleOwner){ passwordText ->
             passwordText?.let { password ->

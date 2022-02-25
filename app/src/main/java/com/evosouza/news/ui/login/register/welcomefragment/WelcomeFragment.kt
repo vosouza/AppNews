@@ -45,7 +45,7 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun nextFragment() {
-        findNavController().navigate(R.id.action_welcomeFragment_to_subjectChoseFragment)
+        findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
     }
 
     override fun onResume() {

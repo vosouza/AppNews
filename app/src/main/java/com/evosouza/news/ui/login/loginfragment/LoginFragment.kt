@@ -14,7 +14,7 @@ import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentLoginBinding
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
 import com.evosouza.news.ui.login.loginfragment.viewmodel.LoginViewModel
-import com.evosouza.news.util.setError
+import com.evosouza.news.util.setErrorResId
 
 class LoginFragment : Fragment() {
 
@@ -87,11 +87,11 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.loginFieldErrorResId.observe(viewLifecycleOwner) {
-            binding.inputLayoutUserName.setError(requireContext(), it)
+            binding.inputLayoutUserName.setErrorResId(requireContext(), it)
         }
 
         viewModel.passwordErrorResId.observe(viewLifecycleOwner) {
-            binding.inputLayoutPassword.setError(requireContext(), it)
+            binding.inputLayoutPassword.setErrorResId(requireContext(), it)
         }
 
     }

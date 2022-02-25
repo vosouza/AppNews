@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.database.NewsDB
 import com.evosouza.news.data.database.repository.UserRepositoryImpl
@@ -16,8 +18,10 @@ import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentProfileBinding
 import com.evosouza.news.ui.home.profile.viewmodel.ProfileViewModel
 import com.evosouza.news.util.bitmapToString
-import com.evosouza.news.util.setError
+import com.evosouza.news.util.setErrorResId
 import com.evosouza.news.util.stringBase64ToBitmap
+import com.evosouza.news.util.toStars
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.Dispatchers
 
 
@@ -92,7 +96,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun openSubjectsFragments() {
-        //
+        findNavController().navigate(R.id.action_profileFragment_to_subjectChoseFragment)
     }
 
     private fun setupObservers() {
@@ -116,19 +120,19 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.lastPassword.observe(viewLifecycleOwner) {
-            binding.inputLayoutLastUserPassword.setError(requireContext(), it)
+            binding.inputLayoutLastUserPassword.setErrorResId(requireContext(), it)
         }
 
         viewModel.newPassword.observe(viewLifecycleOwner) {
-            binding.inputNewUserPassword.setError(requireContext(), it)
+            binding.inputNewUserPassword.setErrorResId(requireContext(), it)
         }
 
         viewModel.userEmail.observe(viewLifecycleOwner) {
-            binding.inputLayoutUserEmail.setError(requireContext(), it)
+            binding.inputLayoutUserEmail.setErrorResId(requireContext(), it)
         }
 
         viewModel.userName.observe(viewLifecycleOwner) {
-            binding.inputLayoutUserName.setError(requireContext(), it)
+            binding.inputLayoutUserName.setErrorResId(requireContext(), it)
         }
     }
 
@@ -143,9 +147,9 @@ class ProfileFragment : Fragment() {
 
     private fun fillUserFields(user: User) {
         binding.apply {
-            txtUserEmail.text = "Email: ${user.email}"
-            txtUserName.text = "User Name: ${user.userName}"
-            txtUserPassword.text = "Password: ${user.password}"
+            txtUserEmail.text = resources.getString(R.string.email, user.email)
+            txtUserName.text = resources.getString(R.string.username, user.userName)
+            txtUserPassword.text = resources.getString(R.string.password, user.password.toStars())
         }
     }
 

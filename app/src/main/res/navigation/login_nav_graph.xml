@@ -47,15 +47,7 @@
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
-            android:id="@+id/action_welcomeFragment_to_subjectChoseFragment"
-            app:destination="@id/subjectChoseFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/subjectChoseFragment"
-        android:name="com.evosouza.news.ui.home.subjects.SubjectChoseFragment"
-        android:label="SubjectChoseFragment" >
-        <action
-            android:id="@+id/action_subjectChoseFragment_to_loginFragment"
+            android:id="@+id/action_welcomeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 

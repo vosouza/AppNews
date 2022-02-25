@@ -1,19 +1,16 @@
 package com.evosouza.news.util
 
-import android.R.attr
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.util.Base64
 import com.google.android.material.textfield.TextInputLayout
-import java.io.ByteArrayOutputStream
-import android.graphics.BitmapFactory
 import timber.log.Timber
-import java.lang.Exception
-import android.R.attr.bitmap
-import android.graphics.Matrix
+import java.io.ByteArrayOutputStream
 
 
-fun TextInputLayout.setError(context: Context, resId: Int?) {
+fun TextInputLayout.setErrorResId(context: Context, resId: Int?) {
     error = if (resId != null && resId != 0) context.getString(resId) else null
 }
 
@@ -32,6 +29,14 @@ fun String.stringBase64ToBitmap(): Bitmap?{
         Timber.e(e)
         null
     }
+}
+
+fun String.toStars(): String{
+    var password = ""
+    for (i in 0..this.count()){
+        password += "*"
+    }
+    return  password
 }
 
 fun Bitmap.resizeImage(widthToResize: Float = 250f, heightToResize: Float = 250f ): Bitmap {

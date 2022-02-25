@@ -44,4 +44,7 @@
     <string name="enter_last_password">Enter Last Password</string>
     <string name="enter_new_password">Enter New Password</string>
     <string name="profile">Profile</string>
+    <string name="email">E-mail: %s</string>
+    <string name="username">User Name: %s</string>
+    <string name="password">Password: %s</string>
 </resources>

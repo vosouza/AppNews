@@ -3,7 +3,6 @@ package com.evosouza.news.ui.login.register.photofragment
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.evosouza.news.databinding.FragmentPhotoBinding
 import com.evosouza.news.ui.login.register.photofragment.photoviewmodel.PhotoViewModel
 import com.evosouza.news.util.MessageDialog
 import com.evosouza.news.util.bitmapToString
+import timber.log.Timber
 
 class PhotoFragment : Fragment() {
 
@@ -37,7 +37,7 @@ class PhotoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +46,7 @@ class PhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         user = arguments?.getSerializable("user") as User
-        Log.e("TAG", "onViewCreated: $user")
+        Timber.e("onViewCreated: $user")
 
         val userDB = UserRepositoryImpl(NewsDB(requireContext()))
         viewModel =

@@ -118,10 +118,15 @@ class HomeFragment : Fragment() {
         viewModel.interests.observe(viewLifecycleOwner){ list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    viewModel.getListOfInterest(BuildConfig.API_KEY)
+                    if (list.data.isNullOrEmpty()){
+                        openSubjectsFragments()
+                    }else{
+                        viewModel.getListOfInterest(BuildConfig.API_KEY)
+                    }
+
                 }
                 Status.ERROR -> {
-                    //fazer alguma coisa
+                    openSubjectsFragments()
                 }
                 Status.LOADING -> {
                     //fazer alguma outra coisa
@@ -144,6 +149,10 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun openSubjectsFragments() {
+        findNavController().navigate(R.id.action_homeFragment_to_subjectChoseFragment)
     }
 
     private fun setCarrousel(articles: List<Article>) {

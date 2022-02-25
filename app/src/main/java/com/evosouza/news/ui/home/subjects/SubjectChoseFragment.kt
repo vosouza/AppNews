@@ -48,7 +48,7 @@ class SubjectChoseFragment : Fragment() {
     private fun setButtonClick() {
         binding.btnNext.setOnClickListener {
             viewModel.saveInterestsList(getSelectedChips())
-            findNavController().navigate(R.id.action_subjectChoseFragment_to_loginFragment)
+            findNavController().popBackStack()
         }
     }
 

@@ -10,7 +10,7 @@ import com.evosouza.news.R
 import com.evosouza.news.data.model.User
 import com.evosouza.news.databinding.FragmentUserNameBinding
 import com.evosouza.news.ui.login.register.usernamefragment.viewmodel.UserNameViewModel
-import com.evosouza.news.util.setError
+import com.evosouza.news.util.setErrorResId
 
 class UserNameFragment : Fragment() {
 
@@ -43,15 +43,15 @@ class UserNameFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.userNameFieldError.observe(viewLifecycleOwner) {
-            binding.inputLayoutCreateUserName.setError(requireContext(), it)
+            binding.inputLayoutCreateUserName.setErrorResId(requireContext(), it)
         }
 
         viewModel.emailError.observe(viewLifecycleOwner) {
-            binding.inputLayoutEmail.setError(requireContext(), it)
+            binding.inputLayoutEmail.setErrorResId(requireContext(), it)
         }
 
         viewModel.confirmEmailError.observe(viewLifecycleOwner) {
-            binding.inputLayoutConfirmEmail.setError(requireContext(), it)
+            binding.inputLayoutConfirmEmail.setErrorResId(requireContext(), it)
         }
 
         viewModel.userData.observe(viewLifecycleOwner) {
