@@ -21,7 +21,6 @@ import com.evosouza.news.util.bitmapToString
 import com.evosouza.news.util.setErrorResId
 import com.evosouza.news.util.stringBase64ToBitmap
 import com.evosouza.news.util.toStars
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.Dispatchers
 
 
@@ -65,8 +64,8 @@ class ProfileFragment : Fragment() {
 
     private fun setupClickListener() {
         binding.txtChangeData.setOnClickListener {
-            binding.changeData.visibility = View.VISIBLE
-            binding.showData.visibility = View.GONE
+            binding.textData.cardTextData.visibility = View.GONE
+            binding.formData.cardForms.visibility = View.VISIBLE
         }
 
         binding.btnChangeInterests.setOnClickListener {
@@ -80,18 +79,18 @@ class ProfileFragment : Fragment() {
         binding.btnSaveData.setOnClickListener {
             binding.apply {
                 viewModel.validateUserInput(
-                    edtUserName.text.toString(),
-                    edtUserEmail.text.toString(),
-                    edtLastUserPassword.text.toString(),
-                    edtNewUserPassword.text.toString(),
+                    formData.edtUserName.text.toString(),
+                    formData.edtUserEmail.text.toString(),
+                    formData.edtLastUserPassword.text.toString(),
+                    formData.edtNewUserPassword.text.toString(),
                     imageBitmap?.bitmapToString()
                 )
             }
         }
 
-        binding.cancelButton.setOnClickListener {
-            binding.changeData.visibility = View.GONE
-            binding.showData.visibility = View.VISIBLE
+        binding.formData.cancelButton.setOnClickListener {
+            binding.formData.cardForms.visibility = View.GONE
+            binding.textData.cardTextData.visibility = View.VISIBLE
         }
     }
 
@@ -103,14 +102,14 @@ class ProfileFragment : Fragment() {
         viewModel.updateUserData.observe(viewLifecycleOwner) { done ->
             when (done.status) {
                 Status.ERROR -> {
-                    binding.changeData.visibility = View.GONE
-                    binding.showData.visibility = View.GONE
+                    binding.formData.cardForms.visibility = View.GONE
+                    binding.textData.cardTextData.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
                     getUserData()
-                    binding.changeData.visibility = View.GONE
-                    binding.showData.visibility = View.VISIBLE
+                    binding.formData.cardForms.visibility = View.GONE
+                    binding.textData.cardTextData.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.LOADING -> {
@@ -120,19 +119,19 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.lastPassword.observe(viewLifecycleOwner) {
-            binding.inputLayoutLastUserPassword.setErrorResId(requireContext(), it)
+            binding.formData.inputLayoutLastUserPassword.setErrorResId(requireContext(), it)
         }
 
         viewModel.newPassword.observe(viewLifecycleOwner) {
-            binding.inputNewUserPassword.setErrorResId(requireContext(), it)
+            binding.formData.inputNewUserPassword.setErrorResId(requireContext(), it)
         }
 
         viewModel.userEmail.observe(viewLifecycleOwner) {
-            binding.inputLayoutUserEmail.setErrorResId(requireContext(), it)
+            binding.formData.inputLayoutUserEmail.setErrorResId(requireContext(), it)
         }
 
         viewModel.userName.observe(viewLifecycleOwner) {
-            binding.inputLayoutUserName.setErrorResId(requireContext(), it)
+            binding.formData.inputLayoutUserName.setErrorResId(requireContext(), it)
         }
     }
 
@@ -147,9 +146,9 @@ class ProfileFragment : Fragment() {
 
     private fun fillUserFields(user: User) {
         binding.apply {
-            txtUserEmail.text = resources.getString(R.string.email, user.email)
-            txtUserName.text = resources.getString(R.string.username, user.userName)
-            txtUserPassword.text = resources.getString(R.string.password, user.password.toStars())
+            textData.txtUserEmail.text = resources.getString(R.string.email, user.email)
+            textData.txtUserName.text = resources.getString(R.string.username, user.userName)
+            textData.txtUserPassword.text = resources.getString(R.string.password, user.password.toStars())
         }
     }
 
@@ -161,8 +160,8 @@ class ProfileFragment : Fragment() {
 
     private fun fillEdtUser(user: User) {
         binding.apply {
-            edtUserEmail.setText(user.email)
-            edtUserName.setText(user.userName)
+            formData.edtUserEmail.setText(user.email)
+            formData.edtUserName.setText(user.userName)
         }
     }
 

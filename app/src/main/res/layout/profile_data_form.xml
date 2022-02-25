@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardForms"
+    android:layout_margin="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/guideline8">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/forms"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_baseline_cancel_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutUserName"
+        style="@style/FormEditTextInput"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cancelButton">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUserName"
+            style="@style/FormEditText"
+            android:hint="@string/enterName"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutUserEmail"
+        style="@style/FormEditTextInput"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/inputLayoutUserName"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutUserName"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutUserName"
+        app:layout_constraintBottom_toTopOf="@+id/inputLayoutLastUserPassword">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtUserEmail"
+            style="@style/FormEditText"
+            android:hint="@string/enter_valid_e_mail"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutLastUserPassword"
+        style="@style/FormEditTextInput"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/inputLayoutUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutUserEmail"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutUserEmail"
+        app:layout_constraintBottom_toTopOf="@+id/inputNewUserPassword">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtLastUserPassword"
+            style="@style/FormEditText"
+            android:hint="@string/enter_last_password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputNewUserPassword"
+        style="@style/FormEditTextInput"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/inputLayoutUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutUserEmail"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutLastUserPassword"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNewUserPassword"
+            style="@style/FormEditText"
+            android:hint="@string/enter_new_password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
