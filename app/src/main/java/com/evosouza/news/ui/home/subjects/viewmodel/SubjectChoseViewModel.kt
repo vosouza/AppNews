@@ -36,7 +36,6 @@ class SubjectChoseViewModel(
 
     fun saveInterestsList(list: SubjectsModel){
         try {
-//            cache.deleteData(SharedPreference.INTERESTS)
             cache.saveStringSet(SharedPreference.INTERESTS, list.subjects.toSet())
         }catch (e : Exception){
             Timber.e(e)
