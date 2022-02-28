@@ -1,10 +1,10 @@
 package com.evosouza.news.ui.home.favorites
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.evosouza.news.R
@@ -22,13 +22,13 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding: FragmentFavoriteBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
-    private var userID : Long? = null
+    private var userID: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentFavoriteBinding.inflate(inflater,container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -36,14 +36,14 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val repository = DBRepositoryImpl(NewsDB(requireContext()))
         val cache = SharedPreference(requireContext())
-        viewModel = FavoritesViewModel.FavoritesViewModelProviderFactory(cache, repository).create(FavoritesViewModel::class.java)
+        viewModel = FavoritesViewModel.FavoritesViewModelProviderFactory(cache, repository)
+            .create(FavoritesViewModel::class.java)
         userID = viewModel.getUserId()
 
         userID?.let { id ->
-            viewModel.getAllArticles(id).observe(viewLifecycleOwner){ listArticles ->
+            viewModel.getAllArticles(id).observe(viewLifecycleOwner) { listArticles ->
                 listArticles?.let {
                     setRecyclerView(it)
                 }
@@ -60,13 +60,13 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun setAdapter(list: List<Article>){
-        newsAdapter = NewsAdapter(list){
+    private fun setAdapter(list: List<Article>) {
+        newsAdapter = NewsAdapter(list) {
             findNavController().navigate(R.id.action_favoriteFragment_to_articleFragment,
-            Bundle().apply
-             {
-                 putSerializable("article", it)
-             })
+                Bundle().apply
+                {
+                    putSerializable("article", it)
+                })
         }
     }
 

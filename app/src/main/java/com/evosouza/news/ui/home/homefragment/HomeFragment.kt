@@ -32,13 +32,12 @@ class HomeFragment : Fragment() {
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var interestNewsAdapter: InterestNewsAdapter
     private lateinit var newsList: List<Article>
-    private lateinit var interestNewsList: List<InterestNews>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,7 +55,6 @@ class HomeFragment : Fragment() {
 
         observeVMEvents()
         getNews()
-        getSubjects()
         setTabLayoutClick()
 
         binding.swipeLayout.setOnRefreshListener {
@@ -68,12 +66,12 @@ class HomeFragment : Fragment() {
     private fun setTabLayoutClick() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab?.text){
+                when (tab?.text) {
                     getText(R.string.top_headlines) -> {
                         setRecyclerViewForBreakingNews(newsList)
                     }
                     getText(R.string.interests) -> {
-                        setRecyclerViewForInterestNews(interestNewsList)
+                        getSubjects()
                     }
                 }
             }
@@ -115,12 +113,12 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.interests.observe(viewLifecycleOwner){ list ->
+        viewModel.interests.observe(viewLifecycleOwner) { list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    if (list.data.isNullOrEmpty()){
-                        openSubjectsFragments()
-                    }else{
+                    if (list.data.isNullOrEmpty()) {
+//                        openSubjectsFragments()
+                    } else {
                         viewModel.getListOfInterest(BuildConfig.API_KEY)
                     }
 
@@ -134,12 +132,10 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.newsListOfInterests.observe(viewLifecycleOwner){list ->
+        viewModel.newsListOfInterests.observe(viewLifecycleOwner) { list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    list.data?.let{
-                        interestNewsList = it
-                    }
+                    list.data?.let { setRecyclerViewForInterestNews(it) }
                 }
                 Status.ERROR -> {
                     //fazer alguma coisa

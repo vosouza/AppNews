@@ -7,6 +7,7 @@ import com.evosouza.news.data.database.repository.UserRepository
 import com.evosouza.news.data.model.User
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -51,6 +52,7 @@ class ProfileViewModel(
     private fun updateUserData(user: User) {
         viewModelScope.launch {
             _updateUserData.value = State.loading(true)
+            delay(2000)
             try {
                 withContext(ioDispatcher) {
                     user.apply {
@@ -82,7 +84,7 @@ class ProfileViewModel(
     ) {
         validForm = true
         user.value?.let {
-            _userName.value = validateUserName(userName, it)
+            _userName.value = validateUserName(userName)
             _userEmail.value = validateUserEmail(email, it)
             _lastPassword.value = validateUserLastPassword(lastPassword, it)
             _newPassword.value = validateUserNewPassword(newPassword, it)
@@ -94,7 +96,6 @@ class ProfileViewModel(
                 updateUserData(it)
             }
         }
-
     }
 
     private fun validateUserNewPassword(newPassword: String, userData: User): Int {
@@ -118,8 +119,8 @@ class ProfileViewModel(
         } else 0
     }
 
-    private fun validateUserName(userName: String, userData: User): Int {
-        return if (userName.isEmpty() || userName.isBlank() && userName != userData.userName) {
+    private fun validateUserName(userName: String): Int {
+        return if (userName.isEmpty() || userName.isBlank()) {
             validForm = false
             R.string.user_name_invalid
         } else 0

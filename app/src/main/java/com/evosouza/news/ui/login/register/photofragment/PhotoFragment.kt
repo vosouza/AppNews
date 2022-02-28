@@ -29,14 +29,21 @@ class PhotoFragment : Fragment() {
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            val imaStream = requireActivity().contentResolver.openInputStream(uri)
-            imageBitmap = BitmapFactory.decodeStream(imaStream)
-            binding.profileImage.setImageBitmap(imageBitmap)
+            uri?.let {
+                try {
+                    val imaStream = requireActivity().contentResolver.openInputStream(uri)
+                    imageBitmap = BitmapFactory.decodeStream(imaStream)
+                    binding.profileImage.setImageBitmap(imageBitmap)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+            }
+
         }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
         return binding.root

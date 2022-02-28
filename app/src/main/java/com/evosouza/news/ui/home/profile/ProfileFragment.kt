@@ -22,6 +22,7 @@ import com.evosouza.news.util.setErrorResId
 import com.evosouza.news.util.stringBase64ToBitmap
 import com.evosouza.news.util.toStars
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 
 
 class ProfileFragment : Fragment() {
@@ -32,9 +33,15 @@ class ProfileFragment : Fragment() {
     private var imageBitmap: Bitmap? = null
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            val imaStream = requireActivity().contentResolver.openInputStream(uri)
-            imageBitmap = BitmapFactory.decodeStream(imaStream)
-            binding.profileImage.setImageBitmap(imageBitmap)
+            uri?.let {
+                try {
+                    val imaStream = requireActivity().contentResolver.openInputStream(uri)
+                    imageBitmap = BitmapFactory.decodeStream(imaStream)
+                    binding.profileImage.setImageBitmap(imageBitmap)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+            }
         }
 
     override fun onCreateView(
@@ -55,17 +62,15 @@ class ProfileFragment : Fragment() {
             cache
         ).create(ProfileViewModel::class.java)
 
-        viewModel.getUserData()
-        setupObservers()
         getUserData()
+        setupObservers()
         setupClickListener()
 
     }
 
     private fun setupClickListener() {
         binding.txtChangeData.setOnClickListener {
-            binding.textData.cardTextData.visibility = View.GONE
-            binding.formData.cardForms.visibility = View.VISIBLE
+            showFormData()
         }
 
         binding.btnChangeInterests.setOnClickListener {
@@ -89,8 +94,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.formData.cancelButton.setOnClickListener {
-            binding.formData.cardForms.visibility = View.GONE
-            binding.textData.cardTextData.visibility = View.VISIBLE
+            showDataText()
         }
     }
 
@@ -102,14 +106,12 @@ class ProfileFragment : Fragment() {
         viewModel.updateUserData.observe(viewLifecycleOwner) { done ->
             when (done.status) {
                 Status.ERROR -> {
-                    binding.formData.cardForms.visibility = View.GONE
-                    binding.textData.cardTextData.visibility = View.GONE
+                    showDataText()
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
                     getUserData()
-                    binding.formData.cardForms.visibility = View.GONE
-                    binding.textData.cardTextData.visibility = View.VISIBLE
+                    showDataText()
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.LOADING -> {
@@ -148,7 +150,8 @@ class ProfileFragment : Fragment() {
         binding.apply {
             textData.txtUserEmail.text = resources.getString(R.string.email, user.email)
             textData.txtUserName.text = resources.getString(R.string.username, user.userName)
-            textData.txtUserPassword.text = resources.getString(R.string.password, user.password.toStars())
+            textData.txtUserPassword.text =
+                resources.getString(R.string.password, user.password.toStars())
         }
     }
 
@@ -166,4 +169,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun chooseImage() = getContent.launch("image/*")
+
+    private fun showDataText() {
+        binding.textData.cardTextData.visibility = View.VISIBLE
+        binding.btnChangeInterests.visibility = View.VISIBLE
+        binding.txtChangeData.visibility = View.VISIBLE
+        binding.btnSaveData.visibility = View.GONE
+        binding.formData.cardForms.visibility = View.GONE
+    }
+
+    private fun showFormData() {
+        binding.textData.cardTextData.visibility = View.GONE
+        binding.btnChangeInterests.visibility = View.GONE
+        binding.txtChangeData.visibility = View.GONE
+        binding.btnSaveData.visibility = View.VISIBLE
+        binding.formData.cardForms.visibility = View.VISIBLE
+    }
 }
