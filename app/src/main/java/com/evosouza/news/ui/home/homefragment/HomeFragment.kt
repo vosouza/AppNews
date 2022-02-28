@@ -56,11 +56,23 @@ class HomeFragment : Fragment() {
         observeVMEvents()
         getNews()
         setTabLayoutClick()
+        setSwipeRefresh()
+    }
 
+    private fun setSwipeRefresh() {
         binding.swipeLayout.setOnRefreshListener {
-            getNews()
+            binding.tabLayout.apply {
+                val current = this.selectedTabPosition
+                when(this.getTabAt(current)){
+                    getText(R.string.top_headlines) -> {
+                        getNews()
+                    }
+                    getText(R.string.interests) -> {
+                        getSubjects()
+                    }
+                }
+            }
         }
-
     }
 
     private fun setTabLayoutClick() {
@@ -108,7 +120,6 @@ class HomeFragment : Fragment() {
                 }
                 Status.LOADING -> {
                     binding.swipeLayout.isRefreshing = true
-                    //binding.progressBar.visibility = if(it.loading == true) View.VISIBLE else View.GONE
                 }
             }
         }
@@ -117,17 +128,16 @@ class HomeFragment : Fragment() {
             when (list.status) {
                 Status.SUCCESS -> {
                     if (list.data.isNullOrEmpty()) {
-//                        openSubjectsFragments()
+                        openSubjectsFragments()
                     } else {
                         viewModel.getListOfInterest(BuildConfig.API_KEY)
                     }
-
                 }
                 Status.ERROR -> {
-                    openSubjectsFragments()
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.LOADING -> {
-                    //fazer alguma outra coisa
+                    binding.swipeLayout.isRefreshing = true
                 }
             }
         }
@@ -136,12 +146,13 @@ class HomeFragment : Fragment() {
             when (list.status) {
                 Status.SUCCESS -> {
                     list.data?.let { setRecyclerViewForInterestNews(it) }
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.ERROR -> {
-                    //fazer alguma coisa
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.LOADING -> {
-                    //fazer alguma outra coisa
+                    binding.swipeLayout.isRefreshing = true
                 }
             }
         }

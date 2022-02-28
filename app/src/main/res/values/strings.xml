@@ -47,4 +47,5 @@
     <string name="email">E-mail: %s</string>
     <string name="username">User Name: %s</string>
     <string name="password">Password: %s</string>
+    <string name="nothing_saved_yet">Nothing saved yet ;)</string>
 </resources>

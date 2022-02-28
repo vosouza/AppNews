@@ -22,6 +22,7 @@
         android:id="@+id/imgCamera"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:visibility="gone"
         android:src="@drawable/ic_baseline_photo_camera_24"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"

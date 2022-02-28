@@ -15,7 +15,6 @@ import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
-import com.evosouza.news.databinding.FragmentHomeBinding
 import com.evosouza.news.databinding.FragmentSearchBinding
 import com.evosouza.news.ui.home.adapter.NewsAdapter
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
@@ -36,7 +35,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,13 +54,13 @@ class SearchFragment : Fragment() {
                 delay(1500L)
                 hideKeyboard()
                 editable?.let {
-                    if (editable.toString().isNotEmpty()) getNews(editable.toString(), 1)
+                    if (editable.toString().isNotEmpty()) getNews(editable.toString())
                 }
             }
         }
     }
 
-    private fun getNews(query: String, page: Int) {
+    private fun getNews(query: String, page: Int = 1) {
         viewModel.searchNews(query, page, BuildConfig.API_KEY)
     }
 
@@ -70,17 +69,19 @@ class SearchFragment : Fragment() {
             when(it.status){
                 Status.ERROR ->{
                     binding.searchProgressBar.visibility = View.GONE
+                    binding.logoImage.visibility = View.GONE
                     Toast.makeText(requireContext(), "error na api", Toast.LENGTH_SHORT).show()
                 }
                 Status.LOADING ->{
                     binding.searchProgressBar.visibility = View.VISIBLE
+                    binding.logoImage.visibility = View.VISIBLE
                 }
                 Status.SUCCESS ->{
                     binding.searchProgressBar.visibility = View.GONE
                     it?.data?.let { response ->
                         setRecyclerView(response.articles)
                     }
-
+                    binding.logoImage.visibility = View.GONE
                 }
             }
         }

@@ -171,18 +171,20 @@ class ProfileFragment : Fragment() {
     private fun chooseImage() = getContent.launch("image/*")
 
     private fun showDataText() {
-        binding.textData.cardTextData.visibility = View.VISIBLE
+        binding.textData.root.visibility = View.VISIBLE
         binding.btnChangeInterests.visibility = View.VISIBLE
         binding.txtChangeData.visibility = View.VISIBLE
         binding.btnSaveData.visibility = View.GONE
-        binding.formData.cardForms.visibility = View.GONE
+        binding.formData.root.visibility = View.GONE
+        binding.imgCamera.visibility = View.GONE
     }
 
     private fun showFormData() {
-        binding.textData.cardTextData.visibility = View.GONE
+        binding.textData.root.visibility = View.GONE
         binding.btnChangeInterests.visibility = View.GONE
         binding.txtChangeData.visibility = View.GONE
         binding.btnSaveData.visibility = View.VISIBLE
-        binding.formData.cardForms.visibility = View.VISIBLE
+        binding.formData.root.visibility = View.VISIBLE
+        binding.imgCamera.visibility = View.VISIBLE
     }
 }

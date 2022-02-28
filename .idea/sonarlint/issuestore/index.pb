@@ -5,8 +5,6 @@ p
 Lapp/src/main/java/com/evosouza/news/data/database/repository/DBRepository.kt,7\e\7e0a0c1a59610b88444f19163463d25f4d514fbc
 Ö
 Uapp/src/main/java/com/evosouza/news/ui/home/favorites/viewmodel/FavoritesViewModel.kt,c\c\cc5341c0da62638fca520a857e107c0f8d5132dd
-á
-Wapp/src/main/java/com/evosouza/news/ui/home/subjects/viewmodel/SubjectChoseViewModel.kt,e\e\ee3988f28af75c49ccc363269e8822e1ebdcd17e
 j
 :app/src/main/java/com/evosouza/news/data/model/Articles.kt,c\0\c070cfacb3ad6ef762ef55a433ad0c1ba5e5fe36
 v
@@ -21,8 +19,6 @@ Japp/src/main/java/com/evosouza/news/ui/home/adapter/InterestNewsAdapter.kt,2\2
 Napp/src/main/java/com/evosouza/news/ui/home/adapter/VerticalItemNewsAdapter.kt,f\e\fe7b84f790a7b3e6c3e3ff376d47e07d34b55ff2
 x
 Happ/src/main/java/com/evosouza/news/data/sharedpreference/DataStorage.kt,f\2\f22862152eae313a9aecd8c8f0f09507294dd5af
-}
-Mapp/src/main/java/com/evosouza/news/data/sharedpreference/SharedPreference.kt,b\2\b2ef0c3a11789c29d27223734f2c8e682a39c2fc
 Å
 Qapp/src/main/java/com/evosouza/news/ui/home/article/viewmodel/ArticleViewModel.kt,1\2\1286b1271aec207c9ee84d413244f3458a19dc5c
 p
@@ -47,13 +43,9 @@ Xapp/src/main/java/com/evosouza/news/ui/login/register/welcomefragment/WelcomeFr
 Zapp/src/main/java/com/evosouza/news/ui/login/register/passwordfragment/PasswordFragment.kt,e\6\e6315fab28621e67b5e6cd2a9f76e66f3e3d8666
 ä
 Zapp/src/main/java/com/evosouza/news/ui/login/register/usernamefragment/UserNameFragment.kt,1\3\13c82026b6890d062a49d5e7a0bfed3b31d7b01c
-É
-Sapp/src/main/java/com/evosouza/news/ui/home/homefragment/viewmodel/HomeViewModel.kt,f\6\f63f749be7b483535c255169cc3221265c65d061
 j
 :app/src/main/java/com/evosouza/news/util/DrawableHelper.kt,5\f\5fcc287520f69a2aa1a87be9f578fbda92f81e00
 ~
 Napp/src/main/java/com/evosouza/news/data/database/repository/UserRepository.kt,a\6\a6f34a4890125e39be58b6424ee28733d493aa94
-|
-Lapp/src/main/java/com/evosouza/news/ui/home/subjects/SubjectChoseFragment.kt,7\7\778df5d21536ec941f5aa578498b0d343ff29d23
 {
 Kapp/src/main/java/com/evosouza/news/ui/login/loginfragment/LoginFragment.kt,9\1\9140fe0c9d62fbce874560e7078b8a33646f9e5d

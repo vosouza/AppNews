@@ -41,6 +41,17 @@
         app:layout_constraintTop_toBottomOf="@+id/edtSearch"
         tools:listitem="@layout/item_news" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logoImage"
+        android:layout_width="302dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_in_truck"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/searchProgressBar"
         style="?android:attr/progressBarStyle"

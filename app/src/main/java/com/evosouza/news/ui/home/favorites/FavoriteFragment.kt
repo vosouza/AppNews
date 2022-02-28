@@ -46,6 +46,10 @@ class FavoriteFragment : Fragment() {
             viewModel.getAllArticles(id).observe(viewLifecycleOwner) { listArticles ->
                 listArticles?.let {
                     setRecyclerView(it)
+                    if (it.count() > 0 ){
+                        binding.logoImage.visibility = View.GONE
+                        binding.errorMessage.visibility = View.GONE
+                    }
                 }
             }
         }
