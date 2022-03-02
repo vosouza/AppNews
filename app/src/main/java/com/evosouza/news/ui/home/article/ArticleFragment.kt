@@ -13,6 +13,7 @@ import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentArticleBinding
 import com.evosouza.news.ui.home.article.viewmodel.ArticleViewModel
+import kotlinx.coroutines.Dispatchers
 
 class ArticleFragment : Fragment() {
 
@@ -24,7 +25,7 @@ class ArticleFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
@@ -37,7 +38,12 @@ class ArticleFragment : Fragment() {
 
         val repository = DBRepositoryImpl(NewsDB(requireContext()))
         val cache = SharedPreference(requireContext())
-        viewModel = ArticleViewModel.ArticleViewModelProviderFactory(cache, repository).create(ArticleViewModel::class.java)
+
+        viewModel = ArticleViewModel.ArticleViewModelProviderFactory(
+            Dispatchers.IO,
+            cache,
+            repository
+        ).create(ArticleViewModel::class.java)
 
         userID = viewModel.getUserId()
 

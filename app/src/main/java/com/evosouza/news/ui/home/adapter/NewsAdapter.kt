@@ -8,7 +8,7 @@ import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.ItemNewsBinding
 
 class NewsAdapter(
-    private val listNews: List<Article>,
+    private val listNews: MutableList<Article>,
     private val itemClickedListener: ((article: Article) -> Unit)
 ): RecyclerView.Adapter<NewsAdapter.AdapterViewHolder>() {
 
@@ -23,6 +23,12 @@ class NewsAdapter(
 
     override fun getItemCount(): Int = listNews.size
 
+    fun getArticle(position: Int): Article = listNews[position]
+
+    fun delete(position: Int) {
+        listNews.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     class AdapterViewHolder(
         private val itemNewsBinding: ItemNewsBinding,

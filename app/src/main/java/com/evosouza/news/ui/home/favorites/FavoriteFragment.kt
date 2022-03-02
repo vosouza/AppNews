@@ -42,6 +42,8 @@ class FavoriteFragment : Fragment() {
             .create(FavoritesViewModel::class.java)
         userID = viewModel.getUserId()
 
+        setObservers()
+
         userID?.let { id ->
             viewModel.getAllArticles(id).observe(viewLifecycleOwner) { listArticles ->
                 listArticles?.let {
@@ -55,17 +57,30 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    private fun setObservers() {
+        viewModel.delete.observe(viewLifecycleOwner){
+            if (it != FavoritesViewModel.DELETE_ERROR){
+                newsAdapter.delete(it)
+            }
+        }
+    }
+
     private fun setRecyclerView(list: List<Article>) {
         setAdapter(list)
         binding.favoriteRecyclerView.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
+            DeleteHelper(requireContext(),this){
+                val position = it.adapterPosition
+                val article = newsAdapter.getArticle(position)
+                viewModel.deleteArticle(article, position)
+            }
         }
     }
 
     private fun setAdapter(list: List<Article>) {
-        newsAdapter = NewsAdapter(list) {
+        newsAdapter = NewsAdapter(list.toMutableList()) {
             findNavController().navigate(R.id.action_favoriteFragment_to_articleFragment,
                 Bundle().apply
                 {

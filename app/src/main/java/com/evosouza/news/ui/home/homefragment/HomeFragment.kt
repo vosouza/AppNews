@@ -164,6 +164,9 @@ class HomeFragment : Fragment() {
 
     private fun setCarrousel(articles: List<Article>) {
         binding.carrousel.setList(articles as MutableList<Article>)
+        binding.carrousel.setClickListener{ article ->
+            openArticle(article)
+        }
         binding.carrousel.setupCarrousel()
     }
 
@@ -177,11 +180,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapterBreakingNews(list: List<Article>) {
-        newsAdapter = NewsAdapter(list) { article ->
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
-                Bundle().apply {
-                    putSerializable("article", article)
-                })
+        newsAdapter = NewsAdapter(list.toMutableList()) { article ->
+            openArticle(article)
         }
     }
 
@@ -191,17 +191,20 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = interestNewsAdapter
-
         }
     }
 
     private fun setAdapterInterestsNewsNews(list: List<InterestNews>) {
-        interestNewsAdapter = InterestNewsAdapter(list) { article ->
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
-                Bundle().apply {
-                    putSerializable("article", article)
-                })
+        interestNewsAdapter = InterestNewsAdapter(list.toMutableList()) { article ->
+            openArticle(article)
         }
+    }
+
+    private fun openArticle(article: Article){
+        findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
+            Bundle().apply {
+                putSerializable("article", article)
+            })
     }
 
     private fun getNews() {

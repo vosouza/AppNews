@@ -11,4 +11,6 @@ interface DBRepository {
 
     fun getAllArticles(id: Long): LiveData<List<Article>>
 
+    fun getArticleByURL(url: String): Int
+
 }

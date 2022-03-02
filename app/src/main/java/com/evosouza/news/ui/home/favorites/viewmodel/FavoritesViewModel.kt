@@ -1,24 +1,30 @@
 package com.evosouza.news.ui.home.favorites.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.evosouza.news.data.database.repository.DBRepository
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.sharedpreference.DataStorage
 import com.evosouza.news.data.sharedpreference.SharedPreference
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class FavoritesViewModel(
     private val cacheStorage: DataStorage,
     private val repository: DBRepository
 ): ViewModel() {
 
+    private val _delete = MutableLiveData<Int>()
+    val delete: LiveData<Int>
+        get() = _delete
+
     fun getAllArticles(id: Long) = repository.getAllArticles(id)
 
-    fun deleteArticle(article: Article) = viewModelScope.launch {
-        repository.delete(article)
+    fun deleteArticle(article: Article, position: Int) = viewModelScope.launch {
+        try {
+            repository.delete(article)
+            _delete.value = position
+        }catch (e : Exception){
+            _delete.value = DELETE_ERROR
+        }
     }
 
     fun getUserId() = cacheStorage.getIntegerData(SharedPreference.USERID)
@@ -36,4 +42,7 @@ class FavoritesViewModel(
 
     }
 
+    companion object{
+        const val DELETE_ERROR = -1
+    }
 }
