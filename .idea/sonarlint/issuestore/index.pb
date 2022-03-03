@@ -19,8 +19,6 @@ Rapp/src/main/java/com/evosouza/news/data/database/repository/UserRepositoryImpl
 Vapp/src/main/java/com/evosouza/news/ui/login/loginfragment/viewmodel/LoginViewModel.kt,b\d\bd3e9db0889fac197b15b4d64bfabdbeb492e29c
 ï
 eapp/src/main/java/com/evosouza/news/ui/login/register/usernamefragment/viewmodel/UserNameViewModel.kt,3\d\3d2776c372dc71d03f6eb218ff0ccd86025ea91a
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 f
 6app/src/main/java/com/evosouza/news/data/model/User.kt,3\f\3f1426a56304bb8cbbc8ca0a9409c799fe811715
 à
@@ -69,9 +67,13 @@ p
 Lapp/src/main/java/com/evosouza/news/data/database/repository/DBRepository.kt,7\e\7e0a0c1a59610b88444f19163463d25f4d514fbc
 Ä
 Papp/src/main/java/com/evosouza/news/data/database/repository/DBRepositoryImpl.kt,2\6\26171b549b5f086f7743974137d89a91113e7909
-Å
-Qapp/src/main/java/com/evosouza/news/ui/home/article/viewmodel/ArticleViewModel.kt,1\2\1286b1271aec207c9ee84d413244f3458a19dc5c
 É
 Sapp/src/main/java/com/evosouza/news/ui/home/homefragment/viewmodel/HomeViewModel.kt,f\6\f63f749be7b483535c255169cc3221265c65d061
-v
-Fapp/src/main/java/com/evosouza/news/ui/home/article/ArticleFragment.kt,d\f\df03473212e0d8ce89588a7cbebe61c51aac0ea1
+o
+?app/src/main/java/com/evosouza/news/data/model/SubjectsModel.kt,1\8\18c5d04f78f9331a04edb3361a1c22df0d7df7f6
+á
+Wapp/src/main/java/com/evosouza/news/ui/home/subjects/viewmodel/SubjectChoseViewModel.kt,e\e\ee3988f28af75c49ccc363269e8822e1ebdcd17e
+x
+Happ/src/main/java/com/evosouza/news/ui/home/homefragment/HomeFragment.kt,a\b\abdbe7a9ae8866a524804a5db42b68e84f327c61
+|
+Lapp/src/main/java/com/evosouza/news/ui/home/subjects/SubjectChoseFragment.kt,7\7\778df5d21536ec941f5aa578498b0d343ff29d23

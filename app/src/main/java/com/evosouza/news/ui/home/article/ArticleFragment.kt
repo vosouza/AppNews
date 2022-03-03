@@ -18,16 +18,16 @@ import kotlinx.coroutines.Dispatchers
 class ArticleFragment : Fragment() {
 
     private lateinit var viewModel: ArticleViewModel
-    private var _binding: FragmentArticleBinding? = null
-    private val binding: FragmentArticleBinding get() = _binding!!
+    private lateinit var binding: FragmentArticleBinding
     private lateinit var article: Article
     private var userID: Long? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentArticleBinding.inflate(inflater, container, false)
+        binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -57,11 +57,5 @@ class ArticleFragment : Fragment() {
             viewModel.saveArticle(article)
             Toast.makeText(requireContext(), "artigo salvo", Toast.LENGTH_SHORT).show()
         }
-
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 }
