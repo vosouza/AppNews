@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
         binding.swipeLayout.setOnRefreshListener {
             binding.tabLayout.apply {
                 val current = this.selectedTabPosition
-                when(this.getTabAt(current)){
+                when(this.getTabAt(current)?.text){
                     getText(R.string.top_headlines) -> {
                         getNews()
                     }

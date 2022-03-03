@@ -18,7 +18,8 @@ import kotlinx.coroutines.Dispatchers
 
 class SubjectChoseFragment : Fragment() {
 
-    lateinit var binding: FragmentSubjectChoseBinding
+    private var _binding: FragmentSubjectChoseBinding? = null
+    private val binding: FragmentSubjectChoseBinding get() = _binding!!
     lateinit var viewModel: SubjectChoseViewModel
     private lateinit var interests: SubjectsModel
 
@@ -26,7 +27,7 @@ class SubjectChoseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSubjectChoseBinding.inflate(inflater, container, false)
+        _binding = FragmentSubjectChoseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,7 +41,6 @@ class SubjectChoseFragment : Fragment() {
 
         observeViewModel()
         setButtonClick()
-
         viewModel.getSubjects()
 
     }
@@ -54,8 +54,9 @@ class SubjectChoseFragment : Fragment() {
 
     private fun getSelectedChips(): SubjectsModel {
         val list = mutableListOf<String>()
-        binding.chipGroup.checkedChipIds.forEach {
-            binding.chipGroup.getChildAt(it)?.let { chip ->
+        binding.chipGroup.checkedChipIds.forEach { index ->
+            val n = index % (interests.subjects.count()+1)
+            this.binding.chipGroup.getChildAt(n)?.let { chip ->
                 val text = ( chip as Chip).text
                 list.add(text.toString())
             }
@@ -96,5 +97,10 @@ class SubjectChoseFragment : Fragment() {
                 chip.setOnClickListener { binding.btnNext.isEnabled = true }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
