@@ -1,6 +1,7 @@
 package com.evosouza.news.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
@@ -15,6 +16,7 @@ data class Article(
     val url: String?,
     val urlToImage: String?,
     val publishedAt: String?,
-    val content: String?
+    val content: String?,
+    var userId: Long
 ): Serializable
 

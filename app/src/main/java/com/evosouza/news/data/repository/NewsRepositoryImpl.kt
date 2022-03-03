@@ -9,4 +9,7 @@ class NewsRepositoryImpl(private val service: Service): NewsRepository {
 
     override suspend fun searchNews(query: String, page: Int, apiKey: String): NewsResponse =
         service.searchNews(query, page, apiKey)
+
+    override suspend fun getNewsBySubject(subject: String, apiKey: String): NewsResponse =
+        service.searchNewsBySubject(subject, apiKey)
 }

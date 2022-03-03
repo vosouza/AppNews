@@ -6,4 +6,6 @@ interface NewsRepository {
     suspend fun getBreakNews(country: String, page: Int, apiKey: String): NewsResponse
 
     suspend fun searchNews(query: String, page: Int, apiKey: String): NewsResponse
+
+    suspend fun getNewsBySubject(subject: String, apiKey: String): NewsResponse
 }

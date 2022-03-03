@@ -12,26 +12,33 @@ import com.evosouza.news.BuildConfig
 import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
+import com.evosouza.news.data.model.InterestNews
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
+import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentHomeBinding
+import com.evosouza.news.ui.home.adapter.InterestNewsAdapter
 import com.evosouza.news.ui.home.adapter.NewsAdapter
-import com.evosouza.news.ui.home.viewmodel.HomeViewModel
+import com.evosouza.news.ui.home.homefragment.viewmodel.HomeViewModel
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
     lateinit var viewModel: HomeViewModel
+    private var _binding: FragmentHomeBinding? = null
+    private val binding: FragmentHomeBinding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var interestNewsAdapter: InterestNewsAdapter
+    private lateinit var newsList: List<Article>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,15 +46,61 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val newsRepository = NewsRepositoryImpl(ApiService.service)
-        viewModel = HomeViewModel.HomeViewModelProviderFactory(Dispatchers.IO, newsRepository).create(HomeViewModel::class.java)
+        val cache = SharedPreference(requireContext())
+        viewModel = HomeViewModel.HomeViewModelProviderFactory(
+            Dispatchers.IO,
+            newsRepository,
+            cache
+        ).create(HomeViewModel::class.java)
 
-        getNews()
         observeVMEvents()
+        getNews()
+        setTabLayoutClick()
+        setSwipeRefresh()
+    }
 
+    private fun setSwipeRefresh() {
         binding.swipeLayout.setOnRefreshListener {
-            getNews()
+            binding.tabLayout.apply {
+                val current = this.selectedTabPosition
+                when(this.getTabAt(current)?.text){
+                    getText(R.string.top_headlines) -> {
+                        getNews()
+                    }
+                    getText(R.string.interests) -> {
+                        getSubjects()
+                    }
+                }
+            }
         }
+    }
 
+    private fun setTabLayoutClick() {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.text) {
+                    getText(R.string.top_headlines) -> {
+                        setRecyclerViewForBreakingNews(newsList)
+                    }
+                    getText(R.string.interests) -> {
+                        getSubjects()
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // n sei
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //n sei
+            }
+
+        })
+    }
+
+    private fun getSubjects() {
+        viewModel.getSubjects()
     }
 
     private fun observeVMEvents() {
@@ -55,9 +108,11 @@ class HomeFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { newsResponse ->
-                        setRecyclerView(newsResponse.articles)
+                        setCarrousel(newsResponse.articles)
+                        setRecyclerViewForBreakingNews(newsResponse.articles)
+                        newsList = newsResponse.articles
                     }
-                    binding.swipeLayout.isRefreshing=false
+                    binding.swipeLayout.isRefreshing = false
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), "Erro: ${it.error}", Toast.LENGTH_SHORT).show()
@@ -65,31 +120,99 @@ class HomeFragment : Fragment() {
                 }
                 Status.LOADING -> {
                     binding.swipeLayout.isRefreshing = true
-                    //binding.progressBar.visibility = if(it.loading == true) View.VISIBLE else View.GONE
+                }
+            }
+        }
+
+        viewModel.interests.observe(viewLifecycleOwner) { list ->
+            when (list.status) {
+                Status.SUCCESS -> {
+                    if (list.data.isNullOrEmpty()) {
+                        openSubjectsFragments()
+                    } else {
+                        viewModel.getListOfInterest(BuildConfig.API_KEY)
+                    }
+                }
+                Status.ERROR -> {
+                    binding.swipeLayout.isRefreshing = false
+                }
+                Status.LOADING -> {
+                    binding.swipeLayout.isRefreshing = true
+                }
+            }
+        }
+
+        viewModel.newsListOfInterests.observe(viewLifecycleOwner) { list ->
+            when (list.status) {
+                Status.SUCCESS -> {
+                    list.data?.let { setRecyclerViewForInterestNews(it) }
+                    binding.swipeLayout.isRefreshing = false
+                }
+                Status.ERROR -> {
+                    binding.swipeLayout.isRefreshing = false
+                }
+                Status.LOADING -> {
+                    binding.swipeLayout.isRefreshing = true
                 }
             }
         }
     }
 
-    private fun setAdapter(list: List<Article>){
-        newsAdapter = NewsAdapter(list){ article ->
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment, Bundle().apply {
-                putSerializable("article", article)
-            })
-        }
+    private fun openSubjectsFragments() {
+        findNavController().navigate(R.id.action_homeFragment_to_subjectChoseFragment)
     }
 
-    private fun setRecyclerView(list: List<Article>){
-        setAdapter(list)
-        with(binding.rvHome){
+    private fun setCarrousel(articles: List<Article>) {
+        binding.carrousel.setList(articles as MutableList<Article>)
+        binding.carrousel.setClickListener{ article ->
+            openArticle(article)
+        }
+        binding.carrousel.setupCarrousel()
+    }
+
+    private fun setRecyclerViewForBreakingNews(list: List<Article>) {
+        setAdapterBreakingNews(list)
+        with(binding.rvHome) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = newsAdapter
         }
+    }
 
+    private fun setAdapterBreakingNews(list: List<Article>) {
+        newsAdapter = NewsAdapter(list.toMutableList()) { article ->
+            openArticle(article)
+        }
+    }
+
+    private fun setRecyclerViewForInterestNews(list: List<InterestNews>) {
+        setAdapterInterestsNewsNews(list)
+        with(binding.rvHome) {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = interestNewsAdapter
+        }
+    }
+
+    private fun setAdapterInterestsNewsNews(list: List<InterestNews>) {
+        interestNewsAdapter = InterestNewsAdapter(list.toMutableList()) { article ->
+            openArticle(article)
+        }
+    }
+
+    private fun openArticle(article: Article){
+        findNavController().navigate(R.id.action_homeFragment_to_articleFragment,
+            Bundle().apply {
+                putSerializable("article", article)
+            })
     }
 
     private fun getNews() {
         viewModel.getBreakNews("us", 1, BuildConfig.API_KEY)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

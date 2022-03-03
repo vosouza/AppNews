@@ -27,15 +27,16 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
 
     private lateinit var viewModel: SearchViewModel
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding: FragmentSearchBinding get() = _binding!!
     private lateinit var searchAdapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,13 +54,13 @@ class SearchFragment : Fragment() {
                 delay(1500L)
                 hideKeyboard()
                 editable?.let {
-                    if (editable.toString().isNotEmpty()) getNews(editable.toString(), 1)
+                    if (editable.toString().isNotEmpty()) getNews(editable.toString())
                 }
             }
         }
     }
 
-    private fun getNews(query: String, page: Int) {
+    private fun getNews(query: String, page: Int = 1) {
         viewModel.searchNews(query, page, BuildConfig.API_KEY)
     }
 
@@ -68,17 +69,19 @@ class SearchFragment : Fragment() {
             when(it.status){
                 Status.ERROR ->{
                     binding.searchProgressBar.visibility = View.GONE
+                    binding.logoImage.visibility = View.GONE
                     Toast.makeText(requireContext(), "error na api", Toast.LENGTH_SHORT).show()
                 }
                 Status.LOADING ->{
                     binding.searchProgressBar.visibility = View.VISIBLE
+                    binding.logoImage.visibility = View.VISIBLE
                 }
                 Status.SUCCESS ->{
                     binding.searchProgressBar.visibility = View.GONE
                     it?.data?.let { response ->
                         setRecyclerView(response.articles)
                     }
-
+                    binding.logoImage.visibility = View.GONE
                 }
             }
         }
@@ -86,7 +89,7 @@ class SearchFragment : Fragment() {
 
     
     private fun setAdapter(list: List<Article>) {
-        searchAdapter = NewsAdapter(list) { article ->
+        searchAdapter = NewsAdapter(list.toMutableList()) { article ->
             findNavController().navigate(
                 R.id.action_searchFragment_to_articleFragment,
                 Bundle().apply {
@@ -106,5 +109,10 @@ class SearchFragment : Fragment() {
 
     private fun hideKeyboard(){
         (activity as HomeActivity).hideKeyboard()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
