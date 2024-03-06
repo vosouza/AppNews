@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.ItemNewsVerticalBinding
-import kotlinx.android.synthetic.main.item_news_vertical.view.*
 
 class VerticalItemNewsAdapter(
     private val articles: List<Article>,
@@ -25,17 +24,17 @@ class VerticalItemNewsAdapter(
     override fun getItemCount(): Int = articles.count()
 
     class VerticalViewHolder(
-        itemView: ItemNewsVerticalBinding,
+        private val itemViewNews: ItemNewsVerticalBinding,
         private val itemClicked : (article: Article)->Unit
-    ) : RecyclerView.ViewHolder(itemView.root) {
+    ) : RecyclerView.ViewHolder(itemViewNews.root) {
 
         fun bind(article: Article){
             itemView.run {
                 Glide.with(itemView)
                     .load(article.urlToImage)
-                    .into(imageNews)
+                    .into(itemViewNews.imageNews)
 
-                textTitle.text = article.title
+                itemViewNews.textTitle.text = article.title
 
                 setOnClickListener {
                     itemClicked.invoke(article)
