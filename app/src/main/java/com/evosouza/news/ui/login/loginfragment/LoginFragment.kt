@@ -14,6 +14,7 @@ import com.evosouza.news.data.sharedpreference.SharedPreference
 import com.evosouza.news.databinding.FragmentLoginBinding
 import com.evosouza.news.ui.home.homeactivity.HomeActivity
 import com.evosouza.news.ui.login.loginfragment.viewmodel.LoginViewModel
+import com.evosouza.news.util.DefaultAccount
 import com.evosouza.news.util.setErrorResId
 
 class LoginFragment : Fragment() {
@@ -33,6 +34,9 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //test account for google store
+        DefaultAccount().createAccount(requireContext())
 
         val db = UserRepositoryImpl(NewsDB(requireContext()))
         val cache = SharedPreference(requireContext())

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.evosouza.news.R
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.databinding.ItemNewsVerticalBinding
 
@@ -32,6 +33,7 @@ class VerticalItemNewsAdapter(
             itemView.run {
                 Glide.with(itemView)
                     .load(article.urlToImage)
+                    .error(R.drawable.round_broken_image_24)
                     .into(itemViewNews.imageNews)
 
                 itemViewNews.textTitle.text = article.title

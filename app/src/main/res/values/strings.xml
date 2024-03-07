@@ -7,7 +7,7 @@
     <string name="favorite">Favorite</string>
     <string name="search">Search</string>
     <string name="search_for_news">Search For News</string>
-    <string name="enterName">Enter User Name</string>
+    <string name="enterName">Enter e-mai</string>
     <string name="enterPassword">Enter Password</string>
     <string name="email_password_error">E-mail or password didn\'t work</string>
     <string name="save_password">Save Password</string>
