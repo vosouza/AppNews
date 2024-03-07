@@ -108,7 +108,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideKeyboard(){
-        (activity as HomeActivity).hideKeyboard()
+        if(activity != null){
+            (activity as HomeActivity).hideKeyboard()
+        }
     }
 
     override fun onDestroyView() {
