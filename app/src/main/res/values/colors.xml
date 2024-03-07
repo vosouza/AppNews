@@ -15,5 +15,5 @@
     <color name="gray_text">#363535</color>
     <color name="button_disable_background">#8BAFCA</color>
     <color name="blue_transparent">#142D9BF0</color>
-    <color name="white_transparent">#B2FFFFFF</color>
+    <color name="white_transparent">#FFFFFF</color>
 </resources>

@@ -48,4 +48,9 @@
     <string name="username">User Name: %s</string>
     <string name="password">Password: %s</string>
     <string name="nothing_saved_yet">Nothing saved yet ;)</string>
+    <string name="cancelButton">Cancelar mudança dos dados</string>
+    <string name="save_articles">Salvar artigo em favoritos</string>
+    <string name="lista_de_favoritos">Lista de favoritos</string>
+    <string name="mudar_imagem_de_perfil">Mudar imagem de perfil</string>
+    <string name="lista_de_noticias_da_sua_pesquisa">Lista de noticias da sua pesquisa</string>
 </resources>
