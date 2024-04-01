@@ -13,6 +13,7 @@ import com.evosouza.news.R
 import com.evosouza.news.core.Status
 import com.evosouza.news.data.model.Article
 import com.evosouza.news.data.model.InterestNews
+import com.evosouza.news.data.model.NewsResponse
 import com.evosouza.news.data.network.ApiService
 import com.evosouza.news.data.repository.NewsRepositoryImpl
 import com.evosouza.news.data.sharedpreference.SharedPreference
@@ -145,7 +146,7 @@ class HomeFragment : Fragment() {
         viewModel.newsListOfInterests.observe(viewLifecycleOwner) { list ->
             when (list.status) {
                 Status.SUCCESS -> {
-                    list.data?.let { setRecyclerViewForInterestNews(it) }
+                    list.data?.let { setRecyclerViewForInterestNews(it.toMutableList()) }
                     binding.swipeLayout.isRefreshing = false
                 }
                 Status.ERROR -> {
@@ -185,7 +186,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerViewForInterestNews(list: List<InterestNews>) {
+    private fun setRecyclerViewForInterestNews(list: MutableList<InterestNews>) {
+        setButtonForInterestChange(list)
         setAdapterInterestsNewsNews(list)
         with(binding.rvHome) {
             layoutManager = LinearLayoutManager(requireContext())
@@ -194,10 +196,24 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setButtonForInterestChange(list: MutableList<InterestNews>) {
+        list.add(
+            InterestNews(
+                NewsResponse("", 0, emptyList()),
+                "",
+                true
+            )
+        )
+    }
+
     private fun setAdapterInterestsNewsNews(list: List<InterestNews>) {
-        interestNewsAdapter = InterestNewsAdapter(list.toMutableList()) { article ->
+        interestNewsAdapter = InterestNewsAdapter(list.toMutableList(), ::changeInterest) { article ->
             openArticle(article)
         }
+    }
+
+    private fun changeInterest(){
+        findNavController().navigate(R.id.subjectChoseFragment)
     }
 
     private fun openArticle(article: Article){

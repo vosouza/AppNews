@@ -24,4 +24,18 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_news_vertical"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:visibility="gone"
+        android:id="@+id/btnChangeInterests"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_white_bg"
+        android:padding="8dp"
+        android:text="@string/change_interests"
+        android:textAllCaps="false"
+        android:textColor="#1976D2"
+        android:textSize="16sp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

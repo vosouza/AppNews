@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.evosouza.news.R
@@ -15,6 +16,7 @@ import com.evosouza.news.databinding.FragmentSubjectChoseBinding
 import com.evosouza.news.ui.home.subjects.viewmodel.SubjectChoseViewModel
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.Dispatchers
+
 
 class SubjectChoseFragment : Fragment() {
 
@@ -55,7 +57,7 @@ class SubjectChoseFragment : Fragment() {
     private fun getSelectedChips(): SubjectsModel {
         val list = mutableListOf<String>()
         binding.chipGroup.checkedChipIds.forEach { index ->
-            val n = index % (interests.subjects.count()+1)
+            val n = (index % (interests.subjects.count()+1)) -1
             this.binding.chipGroup.getChildAt(n)?.let { chip ->
                 val text = ( chip as Chip).text
                 list.add(text.toString())
