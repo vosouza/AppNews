@@ -53,4 +53,8 @@
     <string name="lista_de_favoritos">Lista de favoritos</string>
     <string name="mudar_imagem_de_perfil">Mudar imagem de perfil</string>
     <string name="lista_de_noticias_da_sua_pesquisa">Lista de noticias da sua pesquisa</string>
+    <string name="entre_em_contato">Entre em contato:</string>
+    <string name="dados_e_not_cias_s_o_retirados_da_api_https_newsapi_org">Dados e notícias são retirados da API https://newsapi.org/</string>
+    <string name="site">Site</string>
+    <string name="politica_de_privacidade">Politica de privacidade</string>
 </resources>
