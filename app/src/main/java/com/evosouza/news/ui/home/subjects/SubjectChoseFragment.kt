@@ -24,6 +24,7 @@ class SubjectChoseFragment : Fragment() {
     private val binding: FragmentSubjectChoseBinding get() = _binding!!
     lateinit var viewModel: SubjectChoseViewModel
     private lateinit var interests: SubjectsModel
+    private val selectedChips = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,15 +56,7 @@ class SubjectChoseFragment : Fragment() {
     }
 
     private fun getSelectedChips(): SubjectsModel {
-        val list = mutableListOf<String>()
-        binding.chipGroup.checkedChipIds.forEach { index ->
-            val n = (index % (interests.subjects.count()+1)) -1
-            this.binding.chipGroup.getChildAt(n)?.let { chip ->
-                val text = ( chip as Chip).text
-                list.add(text.toString())
-            }
-        }
-        return SubjectsModel(list)
+        return SubjectsModel(selectedChips)
     }
 
     private fun observeViewModel(){
@@ -95,11 +88,31 @@ class SubjectChoseFragment : Fragment() {
                 val chip = LayoutInflater.from(context)
                     .inflate(R.layout.chip_choice, binding.root, false) as Chip
                 chip.text = item
+                chip.setOnClickListener {
+                    handleChipClick(chip,item)
+                }
+
                 binding.chipGroup.addView(chip)
-                chip.setOnClickListener { binding.btnNext.isEnabled = true }
             }
         }
     }
+
+    private fun handleChipClick(chip: Chip,item: String) {
+        if (selectedChips.contains(item)) {
+            selectedChips.remove(item)
+            chip.setChipBackgroundColorResource(R.color.white)
+        } else {
+            selectedChips.add(item)
+            chip.setChipBackgroundColorResource(R.color.button)
+        }
+
+        if(selectedChips.isNotEmpty()){
+            binding.btnNext.isEnabled = true
+        }else{
+            binding.btnNext.isEnabled = false
+        }
+    }
+
 
     override fun onDestroyView() {
         _binding = null
